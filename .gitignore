@@ -1,0 +1,31 @@
+### BUILD ###
+# Maven
+log/
+target/
+
+### IDE ###
+# Netbeans
+/nbproject/
+nbactions.xml
+nb-configuration.xml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.eml
+*.iws
+
+# Node & npm
+node/
+node_modules/
+npm-debug.log
+/bin/
+
+src/main/java/de/kitaggmbhtrier/bistro/portal/DbConsoleTest\.java
+
+src/main/resources/resources/img/logo-kita\.png\.org
