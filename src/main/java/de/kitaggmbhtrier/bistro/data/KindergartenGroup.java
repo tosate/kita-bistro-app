@@ -29,4 +29,9 @@ public class KindergartenGroup {
 	public void addChild(KindergartenChild child) {
 		child.setGroup(this);
 	}
+
+	public String getName() {
+		return name;
+	}
+	
 }

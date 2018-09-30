@@ -1,6 +1,6 @@
 package de.kitaggmbhtrier.bistro.data;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +18,8 @@ public class KindergartenChild {
     private Long id;
     private String firstName;
     private String lastName;
-    private LocalDate kigaStart;
-    private LocalDate kigaEnd;
+    private Date kigaStart;
+    private Date kigaEnd;
     private boolean breakfast;
     private boolean lunch;
     @ManyToOne
@@ -28,7 +28,7 @@ public class KindergartenChild {
     protected KindergartenChild() {
     }
 
-    public KindergartenChild(String firstName, String lastName, LocalDate kigaStart, LocalDate kigaEnd, boolean breakfast,
+    public KindergartenChild(String firstName, String lastName, Date kigaStart, Date kigaEnd, boolean breakfast,
             boolean lunch) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,5 +45,13 @@ public class KindergartenChild {
 
 	public void setGroup(KindergartenGroup group) {
 		this.group = group;
+	}
+	
+	public boolean getsBreakfast() {
+		return breakfast;
+	}
+	
+	public boolean getsLunch() {
+		return lunch;
 	}
 }

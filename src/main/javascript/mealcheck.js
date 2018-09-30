@@ -10,6 +10,6 @@ $(document).ready(function () {
 	});
 	
 	$("#inputMeal").select2({
-		data: meals
+		data: mealTypes
 	});
 });

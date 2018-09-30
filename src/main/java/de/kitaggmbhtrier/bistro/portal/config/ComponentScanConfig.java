@@ -4,7 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 @Component
-@ComponentScan(basePackages = {"de.kitaggmbhtrier.bistro.portal.controller"})
+@ComponentScan(basePackages = {"de.kitaggmbhtrier.bistro.data", "de.kitaggmbhtrier.bistro.portal.controller"})
 public class ComponentScanConfig {
 
 }

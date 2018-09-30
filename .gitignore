@@ -26,6 +26,4 @@ node_modules/
 npm-debug.log
 /bin/
 
-src/main/java/de/kitaggmbhtrier/bistro/portal/DbConsoleTest\.java
-
 src/main/resources/resources/img/logo-kita\.png\.org
