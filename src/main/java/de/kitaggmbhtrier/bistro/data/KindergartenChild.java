@@ -54,4 +54,17 @@ public class KindergartenChild {
 	public boolean getsLunch() {
 		return lunch;
 	}
+
+	public KindergartenGroup getGroup() {
+		return group;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+	
 }

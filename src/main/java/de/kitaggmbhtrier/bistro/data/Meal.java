@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,7 +18,7 @@ public class Meal {
 	private Long id;
 	@OneToOne
 	private KindergartenChild child;
-	@ManyToOne
+	private String groupName;
 	private MealType type;
 	private Date mealDate;
 	private boolean eaten;
@@ -30,6 +29,7 @@ public class Meal {
 		this.mealDate = mealDate;
 		this.type = type;
 		this.child = child;
+		this.groupName = child.getGroup().getName();
 	}
 
 	public boolean isEaten() {
@@ -44,8 +44,12 @@ public class Meal {
 		return child;
 	}
 
+	public MealType getType() {
+		return type;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("Meal[id=%d]", id);
+		return String.format("Meal[id=%d, type=%s]", id, this.type.getName());
 	}
 }

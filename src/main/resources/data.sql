@@ -1,7 +1,3 @@
--- Meal types
-INSERT INTO MEAL_TYPE(NAME) VALUES ('Frühstück');
-INSERT INTO MEAL_TYPE(NAME) VALUES ('Mittagessen');
-
 -- Kindergarten groups
 INSERT INTO KINDERGARTEN_GROUP(NAME) VALUES ('Rote Gruppe');
 INSERT INTO KINDERGARTEN_GROUP(NAME) VALUES ('Grüne Gruppe');

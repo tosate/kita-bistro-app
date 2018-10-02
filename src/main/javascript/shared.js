@@ -17,7 +17,7 @@ window.PORTAL = {};
 
 PORTAL.CurrentPage = {};
 
-window.onerror = function (msg, url, lineNi, columnNo, error) {
+window.onerror = function (msg, url, lineNo, columnNo, error) {
 	try {
 		var string = msg.toLowerCase();
 		var substring = "script error";
