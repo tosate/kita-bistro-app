@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +34,7 @@ public class MealCheckController {
 
 	public static final String URL_MEAL_CHECK = "/mealcheck";
 	public static final String URL_SEARCH_JSON = URL_MEAL_CHECK + "/search";
+	public static final String URL_UPDATE_MEAL = URL_MEAL_CHECK + "/update-meal";
 	
 	@Autowired
 	private KindergartenGroupRepository kindergartenGroupRepository;
@@ -66,6 +69,21 @@ public class MealCheckController {
 		 */
 		
 		return result;
+	}
+	
+	@RequestMapping(value = URL_UPDATE_MEAL)
+	public ResponseEntity<String> updateMeal(@RequestParam String mealId, @RequestParam String eaten) {
+		try {
+			Long id = Long.valueOf(mealId);
+			Meal meal = this.mealRepository.findOne(id);
+			meal.setEaten(!Boolean.valueOf(eaten));
+			this.mealRepository.save(meal);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<>("OK", HttpStatus.NO_CONTENT);
 	}
 	
 	private Set<String> getGroups() {

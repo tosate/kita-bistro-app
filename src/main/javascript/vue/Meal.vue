@@ -1,9 +1,9 @@
 <template>
 <div class="col-md-3">
-	<div class="panel panel-default">
-		<div class="panel-heading"><b>{{meal.child.firstName}}</b></div>
-		<div class="panel-body">{{meal.child.lastName}}</div>
-	</div>
+	<button class="btn" type="button" v-on:click="updateMeal(meal)">
+		<b>{{meal.child.firstName}}</b><br/>
+		{{meal.child.lastName}}
+	</button>
 </div>
 </template>
 
@@ -12,8 +12,19 @@
 module.exports = {
 		props: [ 'meal' ],
 		methods: {
-			foo: function() {
-				
+			updateMeal: function(meal) {
+				$(this).prop("disabled", true);
+				$.get("mealcheck/update-meal", {
+					mealId : meal.id,
+					eaten : meal.eaten
+				}).always(function (){
+					$(this).prop("disabled", false);
+				}).done(function () {
+					meal.eaten = (!meal.eaten);
+				}).fail(function() {
+					$("#searchWarning").html("Fehler bei der Aktualisierung des Essensstatus!");
+					$("#searchWarning").show();
+				});
 			}
 		}
 }

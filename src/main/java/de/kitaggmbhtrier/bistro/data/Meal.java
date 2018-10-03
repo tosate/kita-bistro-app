@@ -52,4 +52,9 @@ public class Meal {
 	public String toString() {
 		return String.format("Meal[id=%d, type=%s]", id, this.type.getName());
 	}
+
+	public Long getId() {
+		return id;
+	}
+	
 }

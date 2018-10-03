@@ -35,7 +35,7 @@
 						<span class="glyphicon glyphicon-search" style="display: block;"></span>Suchen
 					</button>
 					<button ttId="search.reset" id="searchFormResetButton"
-						type="button" class="btn btn-default" title="Formular zurücksetzen" style="height: 50px;">
+						type="button" class="btn btn-default" title="Formular zurï¿½cksetzen" style="height: 50px;">
 						<span class="glyphicon glyphicon-remove-circle" style=""></span>
 					</button>
 				</div>
