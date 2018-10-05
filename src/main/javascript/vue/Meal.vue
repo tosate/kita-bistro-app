@@ -1,21 +1,16 @@
 <template>
 <div class="col-md-3">
-	<a href="#" v-on:click="updateMeal(meal)" style="text-decoration: none;">
-		<div v-bind:class="buttonClassAttrib(meal.eaten)">
-			<div>
-				<div v-if="meal.type == 'BREAKFAST'" class="label label-default" style="position: absolute; top: 8px; left: 25px;">F</div>
-				<div v-else class="label label-default" style="position: absolute; top: 8px; left: 25px;">M</div>
-				<div v-if="meal.eaten" class="pull-right">
-					gegessen
-					<span class="glyphicon glyphicon-ok" style="margin: 5px 5px 5px 5px;"></span>
-				</div>
-			</div>
-			<div>
-				<div><b>{{meal.child.firstName}}</b></div>
-				<div>{{meal.child.lastName}}</div>
-			</div>
+	<div class="panel panel-default" style="min-width: 75px; max-width: 300px; display: block; margin-bottom: 3px;">
+		<div>
+			<div v-if="meal.type == 'BREAKFAST'" class="label label-default">F</div>
+			<div v-else class="label label-default">M</div>
+			{{meal.child.firstName}} {{meal.child.lastName}}
 		</div>
-	</a>
+		<button type="button" v-bind:class="buttonClassAttrib(meal.eaten)" v-on:click="updateMeal(meal)">
+			<span v-if="meal.eaten" style="margin-top: 40px; margin-bottom: 40px;">gegessen<span class="glyphicon glyphicon-ok-circle" style="margin-left: 15px;"></span></span>
+			<span v-else style="margin-top: 40px; margin-bottom: 40px;">nicht gegessen<span class="glyphicon glyphicon-ban-circle" style="margin-left: 15px;"></span></span>
+		</button>
+	</div>
 </div>
 </template>
 
