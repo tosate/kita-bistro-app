@@ -1,11 +1,13 @@
 package de.kitaggmbhtrier.bistro.data;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,6 +26,8 @@ public class KindergartenChild {
     private boolean lunch;
     @ManyToOne
     private KindergartenGroup group;
+    @ManyToMany
+    private List<ChildAttribute> attributes;
 
     protected KindergartenChild() {
     }
@@ -66,5 +70,8 @@ public class KindergartenChild {
 	public String getLastName() {
 		return lastName;
 	}
-	
+
+	public List<ChildAttribute> getAttributes() {
+		return attributes;
+	}
 }

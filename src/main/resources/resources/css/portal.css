@@ -169,3 +169,15 @@ body {
 	max-width: 25%;
 	padding: 0 4px;
 }
+
+.panel-meal-heading {
+	padding: 3px 10px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+/* Initially hide most information */
+.panelChildBody {
+	display: none;
+}

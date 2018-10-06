@@ -19,7 +19,7 @@ public class TilesConfig {
 	@Bean
 	public TilesConfigurer tilesConfigurer() {
 		TilesConfigurer tconf = new TilesConfigurer();
-		tconf.setDefinitions("classpath*:/WEB-INF/**/tiles.xml");
+		tconf.setDefinitions( new String[] {"/WEB-INF/**/tiles.xml"});
 		return tconf;
 	}
 }

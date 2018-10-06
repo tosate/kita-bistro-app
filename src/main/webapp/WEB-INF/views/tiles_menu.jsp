@@ -15,7 +15,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li ttId="menu.mealcheck" style="text-align: center;">
 					<a href="mealcheck">
-						<span class="glyphicon glyphicon-ok" style="display: block;font-size: 200%; margin-bottom: 5px;"></span>
+						<span class="glyphicon glyphicon-cutlery" style="display: block;font-size: 200%; margin-bottom: 5px;"></span>
 						Meal check
 					</a>
 			</ul>
