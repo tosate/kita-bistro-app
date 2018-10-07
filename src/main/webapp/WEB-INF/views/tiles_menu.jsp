@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%-- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> --%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<c:url var="mainUrl" value="/mealcheck" />
 
 <!-- Static navbar -->
 <nav class="navbar navbar-default">
@@ -18,6 +20,29 @@
 						<span class="glyphicon glyphicon-cutlery" style="display: block;font-size: 200%; margin-bottom: 5px;"></span>
 						Meal check
 					</a>
+				</li>
+				<sec:authorize access="isAuthenticated()">
+				<li ttId="menu.admin" style="text-align: center;">
+					<a href="admin">
+						<span class="glyphicon glyphicon-wrench" style="display: block; font-size: 200%; margin-bottom: 5px;"></span>
+						Einstellungen
+					</a>
+				</li>
+				<li ttId="menu.logout" style="text-align: center;">
+					<a href="logout">
+						<span class="glyphicon glyphicon-off" style="display: block; font-size: 200%; margin-bottom: 5px;"></span>
+						Logout
+					</a>
+				</li>
+				</sec:authorize>
+				<sec:authorize access="!isAuthenticated()">
+				<li style="text-align: center;">
+					<a href="login">
+						<span class="glyphicon glyphicon-log-in" style="display: block; font-size: 200%; margin-bottom: 5px;"></span>
+						Login
+					</a>
+				</li>
+				</sec:authorize>
 			</ul>
 		</div>
 	</div>

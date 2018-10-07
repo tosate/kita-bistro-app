@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,8 @@ public class PortalUtil {
 	private static final String GIT_MVN_PLUGIN_KEY_COMMITDESCRIBE = "git.commit.id.describe";
 	
 	private String gitInfoCached = "";
-	
+
+	@PostConstruct
 	private void computGitInfo() {
 		final Properties gitProps = new Properties();
 		try {
