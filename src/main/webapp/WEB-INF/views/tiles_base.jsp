@@ -15,10 +15,11 @@
 		<c:forEach var="script" items="${additionalJsFiles}">
 			<script src="${script}"></script>
 		</c:forEach>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" class="ui" href="css/portal.css" />
 	</head>
 	<body>
-		<div class="container">
+		<div>
 			<!--  menu -->
 			<tiles:insertAttribute name="menu" />
 			<!-- content -->

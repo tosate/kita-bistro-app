@@ -4,10 +4,10 @@ html {
 }
 
 body {
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 	
-	margin-bottom: 60px;
+	margin-bottom: 0px;
 }
 
 .footer {
@@ -170,6 +170,65 @@ body {
 	padding: 0 4px;
 }
 
+.ul-columns li {
+	-webkit-column-break-inside: avoid; /* Chrome, Safari */
+    page-break-inside: avoid;           /* Theoretically FF 20+ */
+    break-inside: avoid-column;         /* IE 11 */
+    display:table;                      /* Actually FF 20+ */
+}
+
+/* for desktop */
+.ul-columns {
+    -webkit-columns: 260px 6; /* Chrome, Safari, Opera */
+    -moz-columns: 260px 6; /* Firefox */
+    columns: 260px 6;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.ul-columns {
+	    -webkit-columns: 260px 2; /* Chrome, Safari, Opera */
+	    -moz-columns: 260px 2; /* Firefox */
+	    columns: 260px 2;
+	}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+	.ul-columns {
+	    -webkit-columns: 260px 3; /* Chrome, Safari, Opera */
+	    -moz-columns: 260px 3; /* Firefox */
+	    columns: 260px 3;
+	}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+	.ul-columns {
+	    -webkit-columns: 260px 4; /* Chrome, Safari, Opera */
+	    -moz-columns: 260px 4; /* Firefox */
+	    columns: 260px 4;
+	}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+	.ul-columns {
+	    -webkit-columns: 260px 5; /* Chrome, Safari, Opera */
+	    -moz-columns: 260px 5; /* Firefox */
+	    columns: 260px 5;
+	}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    ..ul-columns {
+	    -webkit-columns: 260px 7; /* Chrome, Safari, Opera */
+	    -moz-columns: 260px 7; /* Firefox */
+	    columns: 260px 7;
+	}
+}
+
 .panel-meal-heading {
 	padding: 3px 10px;
 	border-bottom: 1px solid transparent;
@@ -180,4 +239,18 @@ body {
 /* Initially hide most information */
 .panelChildBody {
 	display: none;
+}
+
+.meal-panel {
+	min-width: 250px;
+	max-width: 260px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	border-color: #ddd;
+	box-shadow: 0 1px 1px rgba(0 ,0, 0, 0.5);
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+	margin-bottom: 20px;
 }
