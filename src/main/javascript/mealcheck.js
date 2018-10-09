@@ -10,11 +10,13 @@ console.log($(document));
 
 $(document).ready(function () {
 	$("#inputGroupName").select2({
-		data: groupNames
+		data: groupNames,
+		minimumResultsForSearch: -1
 	});
 	
 	$("#inputMealType").select2({
-		data: mealTypes
+		data: mealTypes,
+		minimumResultsForSearch: -1
 	});
 	
 	var MealsVueInstance = new MealsComponent({
@@ -22,10 +24,6 @@ $(document).ready(function () {
 		data: {
 			meals: [ ]
 		}
-	});
-	
-	$("#searchFormResetButton").click(function () {
-		$("#searchResult").empty();
 	});
 	
 	$("#searchForm").submit(function (e) {

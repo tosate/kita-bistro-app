@@ -20,12 +20,12 @@
 	<div class="panel-body">
 		<form class="fancy-form" id="searchForm" novalidate="novalidate">
 			<div id="formFields">
-				<label for="inputGroupName" class="fancy-input fancy-input-select" style="margin-right: 20px; width: 180px;">
+				<label for="inputGroupName" class="fancy-input fancy-input-select" style="margin-right: 20px; width: 150px;">
 					<span class="placeholder" style="z-index: 3; font-size: 12px; top: 5px;">Gruppe</span>
 					<select id="inputGroupName" name="inputGroupName" class="form-control"></select>
 				</label>
 				
-				<label for="inputMealType" class="fancy-input fancy-input-select" style="margin-right: 20px; width: 180px;">
+				<label for="inputMealType" class="fancy-input fancy-input-select" style="margin-right: 20px; width: 150px;">
 					<span class="placeholder" style="z-index: 3; font-size: 12px; top: 5px;">Mahlzeit</span>
 					<select id="inputMealType" name="inputMealType" class="form-control"></select>
 				</label>
@@ -33,10 +33,6 @@
 				<div class="pull-right">
 					<button ttId="search.search" type="submit" class="btn btn-primary" id="searchBtn">
 						<span class="glyphicon glyphicon-search" style="display: block;"></span>Suchen
-					</button>
-					<button ttId="search.reset" id="searchFormResetButton"
-						type="button" class="btn btn-default" title="Formular zur�cksetzen" style="height: 50px;">
-						<span class="glyphicon glyphicon-remove-circle" style=""></span>
 					</button>
 				</div>
 			</div>

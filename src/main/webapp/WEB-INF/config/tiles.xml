@@ -15,7 +15,7 @@
 	</definition>
 	
 	<definition name="login" extends="base.definition">
-		<put-attribute name="title" value="Login" />
+		<put-attribute name="title" value="Anmelden" />
 		<put-attribute name="content" value="/WEB-INF/views/pages/login.jsp" />
 		<put-list-attribute name="additionalJsFilesList" cascade="true">
 			<add-attribute value="/webjars/BistroAppPortal/login.bundle.js" />

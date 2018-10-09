@@ -6,14 +6,16 @@ var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const PATHS = {
-		build : path.join(__dirname, 'target', 'classes', 'META-INF', 'resources', 'webjars', packageJSON.name)
+		build : path.join(__dirname, 'target', 'classes', 'META-INF', 'resources',
+				'webjars', packageJSON.name)
 };
 
 module.exports = {
 		// entry: './app/index.js'
 		entry : {
-			// login : './src/main/javascript/login.js'
-			mealcheck : './src/main/javascript/mealcheck.js'
+			login : './src/main/javascript/login.js',
+			mealcheck : './src/main/javascript/mealcheck.js',
+			vendor : Object.keys(package.dependencies)
 		},
 		
 		output : {
