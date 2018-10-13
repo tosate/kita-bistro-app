@@ -19,7 +19,7 @@ Internet Explorer wird nicht unterstützt!<br/> Bitte nutzen Sie Apple Safari, Mo
 	<label for="password" class="sr-only">Passwort</label>
 	<input type="password" name="password" class="form-control" placeholder="Passwort" required>
 	<label class="checkbox" style="text-align: center;">
-		<input type="checkbox" name="remember-me">Eingeloggt bleiben
+		<input type="checkbox" name="remember-me">angemeldet bleiben
 	</label>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	
