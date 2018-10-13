@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
+import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenGroupRepository;
 
 @Controller
@@ -24,6 +26,8 @@ public class AdminController {
 	
 	@Autowired
 	private KindergartenGroupRepository kindergartenGroupRepository;
+	@Autowired
+	private KindergartenChildRepository kindergrtenChildRepository;
 
 	@RequestMapping(value=URL_ADMIN)
 	public ModelAndView adminPage() {
@@ -48,8 +52,22 @@ public class AdminController {
 		try {
 			long id = Long.valueOf(groupId);
 			// TODO check whether group is empty
-			kindergartenGroupRepository.delete(id);
-			return new ControllerResponse(true, "");
+			KindergartenGroup group = kindergartenGroupRepository.findOne(id);
+			List<KindergartenChild> childrenInGroup = kindergrtenChildRepository.findByGroupName(group.getName());
+			if(childrenInGroup.size() == 0) {
+				kindergartenGroupRepository.delete(id);
+				return new ControllerResponse(true, "");
+			} else {
+				StringBuilder sb = new StringBuilder();
+				for(KindergartenChild child : childrenInGroup) {
+					sb.append(child.getFirstName());
+					sb.append(" ");
+					sb.append(child.getLastName());
+					sb.append(", ");
+				}
+				String childrenList = sb.toString();
+				return new ControllerResponse(false, "Gruppe kann nicht gelöscht werden, da ihr noch Kinder zugewiesen sind: " + childrenList.substring(0, childrenList.length() - 2));
+			}
 		} catch(Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
