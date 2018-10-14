@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import antlr.StringUtils;
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
@@ -23,6 +24,7 @@ public class AdminController {
 	public static final String URL_ADMIN = "/admin";
 	public static final String URL_FETCH_GROUPS_JSON = URL_ADMIN + "/fetch/groups";
 	public static final String URL_DELETE_GROUP_JSON = URL_ADMIN + "/delete/group";
+	public static final String URL_UPDATE_GROUP_JSON = URL_ADMIN + "/update/group";
 	
 	@Autowired
 	private KindergartenGroupRepository kindergartenGroupRepository;
@@ -70,6 +72,27 @@ public class AdminController {
 			}
 		} catch(Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ControllerResponse(false, e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = URL_UPDATE_GROUP_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ControllerResponse updateGroup(@RequestParam String groupId, @RequestParam String groupName) {
+		if(groupName == null || groupName.length() == 0) {
+			return new ControllerResponse(false, "Ungültiger Gruppenname");
+		}
+		try {
+			long id = Long.valueOf(groupId);
+			KindergartenGroup group = kindergartenGroupRepository.findOne(id);
+			if(group != null) {
+				group.setName(groupName);
+				kindergartenGroupRepository.save(group);
+				return new ControllerResponse(true, "");
+			} else {
+				return new ControllerResponse(false, "Gruppe wurde nicht gefunden!");
+			}
+		} catch(Exception e) {
 			e.printStackTrace();
 			return new ControllerResponse(false, e.getMessage());
 		}

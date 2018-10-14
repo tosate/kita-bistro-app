@@ -18,7 +18,6 @@ public class Meal {
 	private Long id;
 	@OneToOne
 	private KindergartenChild child;
-	private String groupName;
 	private MealType type;
 	private Date mealDate;
 	private boolean eaten;
@@ -29,7 +28,6 @@ public class Meal {
 		this.mealDate = mealDate;
 		this.type = type;
 		this.child = child;
-		this.groupName = child.getGroup().getName();
 	}
 
 	public boolean isEaten() {

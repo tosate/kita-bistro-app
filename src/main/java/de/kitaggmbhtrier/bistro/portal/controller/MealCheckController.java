@@ -63,10 +63,14 @@ public class MealCheckController {
 			@RequestParam String groupName, @RequestParam String mealType) {
 		List<Meal> result = new ArrayList<>();
 		
-		result = this.mealRepository.findByMealDateAndGroupNameAndType(getToday(), groupName, MealType.findByName(mealType));
-		/*
-		 * Retrive meals from DB
-		 */
+		List<Meal> searchResult = this.mealRepository.findByMealDateAndType(getToday(), MealType.findByName(mealType));
+		
+		// filter by group name
+		for(Meal meal : searchResult) {
+			if(meal.getChild().getGroup().getName().equals(groupName)) {
+				result.add(meal);
+			}
+		}
 		
 		return result;
 	}

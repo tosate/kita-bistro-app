@@ -10,5 +10,5 @@ import de.kitaggmbhtrier.bistro.data.MealType;
 
 public interface MealRepository extends CrudRepository<Meal, Long> {
 	List<Meal> findByMealDate(Date mealDate);
-	List<Meal> findByMealDateAndGroupNameAndType(Date mealDate, String groupName, MealType type);
+	List<Meal> findByMealDateAndType(Date mealDate, MealType type);
 }
