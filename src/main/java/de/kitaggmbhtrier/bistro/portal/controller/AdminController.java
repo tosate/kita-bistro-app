@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import antlr.StringUtils;
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
@@ -23,6 +22,7 @@ public class AdminController {
 	
 	public static final String URL_ADMIN = "/admin";
 	public static final String URL_FETCH_GROUPS_JSON = URL_ADMIN + "/fetch/groups";
+	public static final String URL_CREATE_GROUP_JSON = URL_ADMIN + "/create/group";
 	public static final String URL_DELETE_GROUP_JSON = URL_ADMIN + "/delete/group";
 	public static final String URL_UPDATE_GROUP_JSON = URL_ADMIN + "/update/group";
 	
@@ -48,17 +48,27 @@ public class AdminController {
 		return result;
 	}
 	
+	@RequestMapping(value = URL_CREATE_GROUP_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ControllerResponse createGroup(@RequestParam String groupName) {
+		if(groupName == null || groupName.length() == 0) {
+			return new ControllerResponse(false, "Ungültiger Gruppenname!");
+		}
+		
+		KindergartenGroup newGroup = new KindergartenGroup(groupName);
+		kindergartenGroupRepository.save(newGroup);
+		return new ControllerResponse();
+	}
+	
 	@RequestMapping(value = URL_DELETE_GROUP_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ControllerResponse deleteGroup(@RequestParam String groupId) {
 		
 		try {
 			long id = Long.valueOf(groupId);
-			// TODO check whether group is empty
 			KindergartenGroup group = kindergartenGroupRepository.findOne(id);
 			List<KindergartenChild> childrenInGroup = kindergrtenChildRepository.findByGroupName(group.getName());
 			if(childrenInGroup.size() == 0) {
 				kindergartenGroupRepository.delete(id);
-				return new ControllerResponse(true, "");
+				return new ControllerResponse();
 			} else {
 				StringBuilder sb = new StringBuilder();
 				for(KindergartenChild child : childrenInGroup) {
@@ -88,7 +98,7 @@ public class AdminController {
 			if(group != null) {
 				group.setName(groupName);
 				kindergartenGroupRepository.save(group);
-				return new ControllerResponse(true, "");
+				return new ControllerResponse();
 			} else {
 				return new ControllerResponse(false, "Gruppe wurde nicht gefunden!");
 			}

@@ -13,7 +13,11 @@
 		<script src="/webjars/BistroAppPortal/shared.bundle.js"></script>
 		<% /************ costum page js : *************/ %>
 		<c:forEach var="script" items="${additionalJsFiles}">
-			<script src="${script}"></script>
+			<script 
+			type="text/javascript"
+			src="${script}"
+			charset="utf-8">
+			</script>
 		</c:forEach>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" class="ui" href="css/portal.css" />

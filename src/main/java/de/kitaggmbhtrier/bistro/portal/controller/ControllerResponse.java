@@ -4,7 +4,9 @@ public class ControllerResponse {
 	private boolean success;
 	private String message;
 	
-	protected ControllerResponse() {}
+	public ControllerResponse() {
+		this(true, "success");
+	}
 	
 	public ControllerResponse(boolean success, String message) {
 		this.success = success;
