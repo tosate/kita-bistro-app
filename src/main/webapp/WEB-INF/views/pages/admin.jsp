@@ -13,13 +13,14 @@
 <div class="tab-content">
 	<div role="tabpanel" class="tab-pane active" id="children">
 		<h2>Kinder</h2>
-		<div id="component-demo"></div>
+		<div id="manage-children"></div>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="child-attributes">
 		<h2>Besondere Eingenschaften</h2>
+		<div id="manage-child-attributes"></div>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="groups">
 		<h2>Gruppen</h2>
-		<div id="groups"></div>
+		<div id="manage-groups"></div>
 	</div>
 </div>

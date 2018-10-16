@@ -8,7 +8,7 @@ const GroupsComponent = Vue.extend(Groups);
 
 $(document).ready(function () {
 	var groupsComponentVue = new GroupsComponent({
-		el: '#groups'
+		el: '#manage-groups'
 	});
 	
 	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {

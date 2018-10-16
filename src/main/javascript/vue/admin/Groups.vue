@@ -6,8 +6,6 @@
 				<div class="form-group">
 					<label>Name</label>
 					<input v-model="groupData.name" class="form-control m1-sm-2 mr-sm-4 my-2" required>
-				</div>
-				<div class="m1-auto text-right">
 					<button type="submit" class="btn btn-primary my-2">Hinzufügen</button>
 				</div>
 			</form>
