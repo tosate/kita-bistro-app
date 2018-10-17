@@ -30,5 +30,17 @@ public class ChildAttribute {
 	public String getName() {
 		return name;
 	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getId() {
+		return id;
+	}
 	
 }

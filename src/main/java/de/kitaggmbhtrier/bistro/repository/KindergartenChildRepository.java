@@ -11,4 +11,5 @@ public interface KindergartenChildRepository extends CrudRepository<Kindergarten
     List<KindergartenChild> findByLastName(String lastName);
     Optional<KindergartenChild> findByLastNameAndFirstName(String firstName, String lastName);
     List<KindergartenChild> findByGroupName(String groupName);
+    List<KindergartenChild> findByAttributes_Name(String name);
 }
