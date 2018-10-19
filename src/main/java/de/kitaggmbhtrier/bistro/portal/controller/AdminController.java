@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 
 @Controller
@@ -14,8 +17,10 @@ public class AdminController {
 	public static final String URL_ADMIN = "/admin";
 
 	@RequestMapping(value=URL_ADMIN)
-	public ModelAndView adminPage() {
+	public ModelAndView adminPage() throws JsonProcessingException {
 		ModelAndView mav = new ModelAndView("admin");
+		
+		mav.addObject("lastNames", (new ObjectMapper().writer().writeValueAsString(new String[] {"Lockman", "Müller"})));
 		
 		return mav;
 	}

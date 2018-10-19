@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
+<script type="text/javascript">
+	lastNames = ${lastNames};
+</script>
+
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
 	<li class="active"><a href="#children" data-toggle="tab" data-tabname="children">Kinder</a></li>

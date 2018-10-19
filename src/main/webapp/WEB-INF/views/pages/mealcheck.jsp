@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	groupNames = ${groupNames};
-	mealTypes = ${mealTypes}
+	mealTypes = ${mealTypes};
 </script>
 
 <!-- Modal -->
@@ -20,15 +20,11 @@
 	<div class="panel-body">
 		<form class="fancy-form" id="searchForm" novalidate="novalidate">
 			<div id="formFields">
-				<label for="inputGroupName" class="fancy-input fancy-input-select" style="margin-right: 20px; width: 150px;">
-					<span class="placeholder" style="z-index: 3; font-size: 12px; top: 5px;">Gruppe</span>
-					<select id="inputGroupName" name="inputGroupName" class="form-control"></select>
-				</label>
+				<label>Gruppe</label>
+				<select id="inputGroupName" name="inputGroupName" class="form-control" style="margin-right: 20px; width: 150px;"></select>
 				
-				<label for="inputMealType" class="fancy-input fancy-input-select" style="margin-right: 20px; width: 150px;">
-					<span class="placeholder" style="z-index: 3; font-size: 12px; top: 5px;">Mahlzeit</span>
-					<select id="inputMealType" name="inputMealType" class="form-control"></select>
-				</label>
+				<label>Mahlzeit</label>
+				<select id="inputMealType" name="inputMealType" class="form-control" style="margin-right: 20px; width: 150px;"></select>
 				
 				<div class="pull-right">
 					<button ttId="search.search" type="submit" class="btn btn-primary" id="searchBtn">
