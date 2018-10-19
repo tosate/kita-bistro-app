@@ -3,15 +3,17 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<form v-on:submit.prevent="onSubmit">
-				<div class="form-group">
-					<label>Kategorie</label>
-					<input v-model="attributeData.classification" class="form-control m1-sm-2 mr-sm-4 my-2" required>
+				<div class="row">
+					<div class="form-group" style="margin-right: 20px;">
+						<label for="classificationInput">Kategorie</label>
+						<input id="classificationInput" v-model="attributeData.classification" class="form-control m1-sm-2 mr-sm-4 my-2" required>
+					</div>
+					<div class="form-group" style="margin-right: 20px;">
+						<label for="nameInput">Name</label>
+						<input id="nameInput" v-model="attributeData.name" class="form-control m1-sm-2 mr-sm-4 my-2" required>
+					</div>
+					<button type="submit" class="btn btn-primary my-2">Hinzufügen</button>
 				</div>
-				<div class="form-group">
-					<label>Name</label>
-					<input v-model="attributeData.name" class="form-control m1-sm-2 mr-sm-4 my-2" required>
-				</div>
-				<button type="submit" class="btn btn-primary my-2">Hinzufügen</button>
 			</form>
 		</div>
 	</div>

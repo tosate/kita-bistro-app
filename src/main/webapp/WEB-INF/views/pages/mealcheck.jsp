@@ -19,14 +19,16 @@
 <div class="panel panel-default">
 	<div class="panel-body">
 		<form class="fancy-form" id="searchForm" novalidate="novalidate">
-			<div id="formFields">
-				<label>Gruppe</label>
-				<select id="inputGroupName" name="inputGroupName" class="form-control" style="margin-right: 20px; width: 150px;"></select>
-				
-				<label>Mahlzeit</label>
-				<select id="inputMealType" name="inputMealType" class="form-control" style="margin-right: 20px; width: 150px;"></select>
-				
-				<div class="pull-right">
+			<div class="row">
+				<div class="form-group" style="margin-right: 20px;">
+					<label for="inputGroupName">Gruppe</label>
+					<select id="inputGroupName" name="inputGroupName" class="form-control m1-sm-2 mr-sm-4 my-2"></select>
+				</div>
+				<div class="form-group" style="margin-right: 20px;">
+					<label for="inputMealType">Mahlzeit</label>
+					<select id="inputMealType" name="inputMealType" class="form-control m1-sm-2 mr-sm-4 my-2"></select>
+				</div>
+				<div>
 					<button ttId="search.search" type="submit" class="btn btn-primary" id="searchBtn">
 						<span class="glyphicon glyphicon-search" style="display: block;"></span>Suchen
 					</button>
