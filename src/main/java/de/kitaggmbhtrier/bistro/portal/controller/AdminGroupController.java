@@ -42,7 +42,7 @@ public class AdminGroupController {
 	@RequestMapping(value = URL_CREATE_GROUP_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ControllerResponse createGroup(@RequestParam String groupName) {
 		if(groupName == null || groupName.length() == 0) {
-			return new ControllerResponse(false, "Ungültiger Gruppenname!");
+			return new ControllerResponse(false, "Ungültiger Bereichsname!");
 		}
 		
 		KindergartenGroup newGroup = new KindergartenGroup(groupName);
@@ -61,7 +61,7 @@ public class AdminGroupController {
 				kindergartenGroupRepository.delete(id);
 				return new ControllerResponse();
 			} else {
-				return new ControllerResponse(false, "Gruppe kann nicht gelöscht werden, da ihr noch Kinder zugewiesen sind: " + AdminController.getNameList(childrenInGroup));
+				return new ControllerResponse(false, "Bereich kann nicht gelöscht werden, da ihm noch Kinder zugewiesen sind: " + AdminController.getNameList(childrenInGroup));
 			}
 		} catch(Exception e) {
 			return new ControllerResponse(false, e.getMessage());
@@ -71,7 +71,7 @@ public class AdminGroupController {
 	@RequestMapping(value = URL_UPDATE_GROUP_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ControllerResponse updateGroup(@RequestParam String groupId, @RequestParam String groupName) {
 		if(groupName == null || groupName.length() == 0) {
-			return new ControllerResponse(false, "Ungültiger Gruppenname");
+			return new ControllerResponse(false, "Ungültiger Bereichsname");
 		}
 		
 		try {
@@ -82,7 +82,7 @@ public class AdminGroupController {
 				kindergartenGroupRepository.save(group);
 				return new ControllerResponse();
 			} else {
-				return new ControllerResponse(false, "Gruppe wurde nicht gefunden!");
+				return new ControllerResponse(false, "Bereich wurde nicht gefunden!");
 			}
 		} catch(Exception e) {
 			return new ControllerResponse(false, e.getMessage());

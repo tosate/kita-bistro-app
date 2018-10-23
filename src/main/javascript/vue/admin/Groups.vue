@@ -104,7 +104,7 @@ export default {
 					alert(controllerResponse.message);
 				}
 			}).fail(function (controllerResponse) {
-				alert("Fehler beim Hinzufügen der Gruppe: " + controllerResponse.message);
+				alert("Fehler beim Hinzufügen des Bereichs: " + controllerResponse.message);
 			});
 		},
 		editGroup: function(group) {
@@ -130,7 +130,7 @@ export default {
 					alert(controllerResponse.message);
 				}
 			}).fail(function (controllerResponse) {
-				alert("Fehler bei der Aktualisierung der Gruppe: " + controllerResponse.message);
+				alert("Fehler bei der Aktualisierung des Bereichs: " + controllerResponse.message);
 			});
 		},
 		onCancel: function() {
@@ -152,7 +152,7 @@ export default {
 					alert(controllerResponse.message);
 				}
 			}).fail( function (controllerResponse) {
-				alert("Fehler beim Löschen der Gruppe: " + controllerResponse.message);
+				alert("Fehler beim Löschen des Bereichs: " + controllerResponse.message);
 			});
 		}
 	}

@@ -2,6 +2,7 @@ package de.kitaggmbhtrier.bistro.portal.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
 import de.kitaggmbhtrier.bistro.data.Meal;
+import de.kitaggmbhtrier.bistro.data.MealComparator;
 import de.kitaggmbhtrier.bistro.data.MealType;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenGroupRepository;
@@ -72,6 +74,7 @@ public class MealCheckController {
 			}
 		}
 		
+		Collections.sort(result, new MealComparator());
 		return result;
 	}
 	

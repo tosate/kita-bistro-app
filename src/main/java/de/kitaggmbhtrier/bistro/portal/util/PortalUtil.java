@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import de.kitaggmbhtrier.bistro.data.KindergartenChild;
+
 
 @Component
 public class PortalUtil {
@@ -42,5 +44,13 @@ public class PortalUtil {
 
 	public String getGitInfo() {
 		return gitInfoCached;
+	}
+	
+	public static int compare(KindergartenChild child1, KindergartenChild child2) {
+		if(child1.getLastName().equals(child2.getLastName())) {
+			return child1.getFirstName().compareTo(child2.getFirstName());
+		} else {
+			return child1.getLastName().compareTo(child2.getLastName());
+		}
 	}
 }
