@@ -165,6 +165,10 @@ input.form-control {
     pointer-events: none
 }
 
+.grid-container {
+	display: grid;
+	grid-gap: 15px;
+}
 
 .row {
 	display: flex;
@@ -186,54 +190,60 @@ input.form-control {
 }
 
 /* for desktop */
-.ul-columns {
-    -webkit-columns: 260px 6; /* Chrome, Safari, Opera */
-    -moz-columns: 260px 6; /* Firefox */
-    columns: 260px 6;
+.grid-container {
+	margin: 10px;
+    display: grid;
+	grid-gap: 15px;
+	grid-template-columns: auto auto auto auto;
 }
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-	.ul-columns {
-	    -webkit-columns: 260px 2; /* Chrome, Safari, Opera */
-	    -moz-columns: 260px 2; /* Firefox */
-	    columns: 260px 2;
+	.grid-container {
+		margin: 10px;
+	    display: grid;
+		grid-gap: 15px;
+		grid-template-columns: auto;
 	}
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-	.ul-columns {
-	    -webkit-columns: 260px 3; /* Chrome, Safari, Opera */
-	    -moz-columns: 260px 3; /* Firefox */
-	    columns: 260px 3;
+	.grid-container {
+		margin: 10px;
+	    display: grid;
+		grid-gap: 15px;
+		grid-template-columns: auto auto;
 	}
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-	.ul-columns {
-	    -webkit-columns: 260px 4; /* Chrome, Safari, Opera */
-	    -moz-columns: 260px 4; /* Firefox */
-	    columns: 260px 4;
+	.grid-container {
+		margin: 10px;
+	    display: grid;
+		grid-gap: 15px;
+		grid-template-columns: auto auto auto;
 	}
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-	.ul-columns {
-	    -webkit-columns: 260px 5; /* Chrome, Safari, Opera */
-	    -moz-columns: 260px 5; /* Firefox */
-	    columns: 260px 5;
+	.grid-container {
+		margin: 10px;
+	    display: grid;
+		grid-gap: 15px;
+		grid-template-columns: auto auto auto auto;
 	}
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-    ..ul-columns {
-	    -webkit-columns: 260px 7; /* Chrome, Safari, Opera */
-	    -moz-columns: 260px 7; /* Firefox */
-	    columns: 260px 7;
+    .grid-container {
+    	margin: 10px;
+	    display: grid;
+		grid-gap: 15px;
+		grid-template-columns: auto auto auto auto auto;
 	}
 }
 

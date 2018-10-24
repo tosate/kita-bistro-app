@@ -1,11 +1,9 @@
 <template>
-<ul class="ul-columns" style="padding: 5px; list-style-type: none;">
+<div class="grid-container">
 	<template v-for="meal in meals">
-	<li>
-		<Meal :meal="meal"></Meal>
-	</li>
+	<Meal :meal="meal"></Meal>
 	</template>
-</ul>
+</div>
 </template>
 
 <script>
