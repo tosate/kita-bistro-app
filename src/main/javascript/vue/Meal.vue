@@ -1,16 +1,19 @@
 <template>
 <div class="meal-panel">
-	<div class="panel-meal-heading" style="position: relative; padding: 5px 15px 15px;">
+	<div class="panel-meal-heading" style="position: relative; padding: 5px 10px 5px;">
 		<span v-if="meal.type == 'BREAKFAST'" class="label label-default">F</span>
 		<span v-else class="label label-default">M</span>
-		{{meal.child.firstName}} {{meal.child.lastName}}
-		<div v-if="meal.child.attributes.length > 0" style="position: absolute; top: 5px; right:15px;">
+		<button type="button" class="btn btn-default btn-xs" style="width: 60px; padding: 5px 8px 5px;">
+			Notiz
+			<span class="glyphicon glyphicon-pencil"></span>
+		</button>
+		<button type="button" v-if="meal.child.attributes.length > 0" class="btn btn-default btn-xs" style="width: 60px; padding: 5px 8px 5px;" v-on:click="expandAll">
 			<span class="badge" style="background-color: #17a2b8">{{meal.child.attributes.length}}</span>
-			<div ttId="search.expand" ttPosition="top" class="expandAll" style="display: inline-block;"
-				v-on:click="expandAll">
-				<span class="glyphicon glyphicon-plus" style="margin: 0px 5px; color: gainsboro;"></span>
-			</div>
-		</div>
+			<span class="glyphicon glyphicon-warning-sign"></span>
+		</button>
+	</div>
+	<div style="padding: 5px 15px 15px;">
+		{{meal.child.firstName}} {{meal.child.lastName}}
 	</div>
 	<div>
 		<template v-if="meal.child.attributes">
