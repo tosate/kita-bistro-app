@@ -9,7 +9,7 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
 	<li class="active"><a href="#children" data-toggle="tab" data-tabname="children">Kinder</a></li>
-	<li><a href="#child-attributes" data-toggle="tab" data-tabname="child-attributes">Besondere Eingenschaften</a></li>
+	<li><a href="#child-attributes" data-toggle="tab" data-tabname="child-attributes">Besondere Eigenschaften</a></li>
 	<li><a href="#groups" data-toggle="tab" data-tabname="groups">Bereiche</a></li>
 </ul>
 
@@ -20,7 +20,7 @@
 		<div id="manage-children"></div>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="child-attributes">
-		<h2>Besondere Eingenschaften</h2>
+		<h2>Besondere Eigenschaften</h2>
 		<div id="manage-child-attributes"></div>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="groups">
