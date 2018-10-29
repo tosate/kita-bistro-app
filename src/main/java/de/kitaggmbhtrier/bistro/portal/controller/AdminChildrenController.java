@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenChildComparator;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
+import de.kitaggmbhtrier.bistro.data.Meal;
+import de.kitaggmbhtrier.bistro.data.MealType;
+import de.kitaggmbhtrier.bistro.portal.util.PortalUtil;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenGroupRepository;
+import de.kitaggmbhtrier.bistro.repository.MealRepository;
 
 @Controller
 public class AdminChildrenController {
@@ -29,11 +33,13 @@ public class AdminChildrenController {
 	private KindergartenChildRepository kindergartenChildRepository;
 	@Autowired
 	private KindergartenGroupRepository kindergartenGroupRepository;
+	@Autowired
+	private MealRepository mealRepository;
 
 	public static final String URL_FETCH_CHILDREN_JSON = AdminController.URL_ADMIN + "/fetch/children";
 	public static final String URL_CREATE_CHILD_JSON = AdminController.URL_ADMIN + "/create/child";
 
-	private static final String DATE_PATTERN = "yyyy-mm-dd";
+	private static final String DATE_PATTERN = "yyyy-MM-dd";
 
 	@RequestMapping(value = URL_FETCH_CHILDREN_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<KindergartenChild> fetchChildren() {
@@ -88,6 +94,20 @@ public class AdminChildrenController {
 			}
 
 			kindergartenChildRepository.save(newChild);
+			
+			// add todays meals for the new child if they have already been created
+			List<Meal> todaysMeals = mealRepository.findByMealDate(PortalUtil.getToday());
+			if(!todaysMeals.isEmpty() && PortalUtil.isTodayBetweenStartAndEnd(newChild.getKigaStart(), newChild.getKigaEnd())) {
+				if(newChild.getsBreakfast()) {
+					Meal bf = new Meal(PortalUtil.getToday(), MealType.BREAKFAST, newChild);
+					mealRepository.save(bf);
+				}
+				
+				if(newChild.getsLunch()) {
+					Meal l = new Meal(PortalUtil.getToday(), MealType.LUNCH, newChild);
+					mealRepository.save(l);
+				}
+			}
 		} catch (Exception e) {
 			return new ControllerResponse(false, "Kind konnte nicht hinzugefügt werden: " + e.getMessage());
 		}

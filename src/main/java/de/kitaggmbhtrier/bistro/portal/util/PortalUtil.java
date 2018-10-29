@@ -2,6 +2,9 @@ package de.kitaggmbhtrier.bistro.portal.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -52,5 +55,22 @@ public class PortalUtil {
 		} else {
 			return child1.getLastName().compareTo(child2.getLastName());
 		}
+	}
+	
+	public static Date getToday() {
+		Calendar today = new GregorianCalendar();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		today.set(Calendar.MILLISECOND, 0);
+		
+		return today.getTime();
+	}
+	
+	public static boolean isTodayBetweenStartAndEnd(Date kigaStart, Date kigaEnd) {
+		if(kigaStart.compareTo(PortalUtil.getToday()) <= 0 && kigaEnd.compareTo(PortalUtil.getToday()) >= 0) {
+			return true;
+		}
+		return false;
 	}
 }

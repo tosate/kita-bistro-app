@@ -74,4 +74,21 @@ public class KindergartenChild {
 	public List<ChildAttribute> getAttributes() {
 		return attributes;
 	}
+
+	public Date getKigaStart() {
+		return kigaStart;
+	}
+
+	public void setKigaStart(Date kigaStart) {
+		this.kigaStart = kigaStart;
+	}
+
+	public Date getKigaEnd() {
+		return kigaEnd;
+	}
+
+	public void setKigaEnd(Date kigaEnd) {
+		this.kigaEnd = kigaEnd;
+	}
+	
 }
