@@ -39,22 +39,25 @@
 </template>
 
 <script>
-
 module.exports = {
 		props: [ 'meal' ],
 		methods: {
 			updateMeal: function(meal) {
 				$(this).prop("disabled", true);
-				$.get("mealcheck/update-meal", {
+				$.get("mealcheck/update/meal", {
 					mealId : meal.id,
 					eaten : meal.eaten
 				}).always(function (){
 					$(this).prop("disabled", false);
-				}).done(function () {
-					meal.eaten = (!meal.eaten);
+				}).done(function (controllerResponse) {
+					if(controllerResponse.success) {
+						meal.eaten = (!meal.eaten);
+					} else {
+						console.log(controllerResponse.message);
+						alert(controllerResponse.message);
+					}
 				}).fail(function() {
-					$("#searchWarning").html("Fehler bei der Aktualisierung des Essensstatus!");
-					$("#searchWarning").show();
+					alert("Fehler bei der Aktualisierung des Essensstatus!");
 				});
 			},
 			buttonClassAttrib(eaten) {

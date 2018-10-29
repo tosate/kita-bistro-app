@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -41,11 +42,11 @@ public class AdminAttributeController {
 	
 	@RequestMapping(value = URL_CREATE_ATTRIBUTE_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ControllerResponse createAttribute(@RequestParam String attributeClassification, @RequestParam String attributeName) {
-		if(attributeClassification == null || attributeClassification.length() == 0) {
+		if(StringUtils.isEmpty(attributeClassification)) {
 			return new ControllerResponse(false, "Ungültige Kategorie für Besonderheit!");
 		}
 		
-		if(attributeName == null || attributeName.length() == 0) {
+		if(StringUtils.isEmpty(attributeName)) {
 			return new ControllerResponse(false, "Ungültiger Name für Besonderheit!");
 		}
 		ChildAttribute newAttribute = new ChildAttribute(attributeClassification, attributeName);
@@ -72,11 +73,11 @@ public class AdminAttributeController {
 	
 	@RequestMapping(value = URL_UPDATE_ATTRIBUTE_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ControllerResponse updateAttribute(@RequestParam String attributeId, @RequestParam String attributeClassification, @RequestParam String attributeName) {
-		if(attributeClassification == null || attributeClassification.length() == 0) {
+		if(StringUtils.isEmpty(attributeClassification)) {
 			return new ControllerResponse(false, "Ungültige Kategorie für Besonderheit!");
 		}
 		
-		if(attributeName == null || attributeName.length() == 0) {
+		if(StringUtils.isEmpty(attributeName)) {
 			return new ControllerResponse(false, "Ungültiger Name für Besonderheit!");
 		}
 		

@@ -39,7 +39,7 @@ $(document).ready(function () {
 		
 		switch(tabname) {
 		case 'children':
-			childrenComponentVue.fetch();
+			childrenComponentVue.initChildrenTab();
 			break;
 		case 'child-attributes':
 			attributesComponentVue.fetch();

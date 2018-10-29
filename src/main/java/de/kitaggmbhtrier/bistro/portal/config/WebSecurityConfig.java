@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/").permitAll()
 			.antMatchers("/mealcheck/**").permitAll()
 			.antMatchers("/login", "/", "/favicon.ico", "/webjars/**", "/css/**", "/img/**").permitAll()
-			.antMatchers("/admin").authenticated()
+			.antMatchers("/admin", "/h2-console/**").authenticated()
 			.and().formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl(MealCheckController.URL_MEAL_CHECK).permitAll();
 //			.and().rememberMe().rememberMeServices(rememberMeService(rememberMeKey)).key(rememberMeKey).tokenValiditySeconds(rememberMeTokenValiditySeconds);
 		

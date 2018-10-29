@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +34,8 @@ public class MealCheckController {
 
 	public static final String URL_MEAL_CHECK = "/mealcheck";
 	public static final String URL_SEARCH_JSON = URL_MEAL_CHECK + "/search";
-	public static final String URL_UPDATE_MEAL = URL_MEAL_CHECK + "/update-meal";
+	public static final String URL_UPDATE_MEAL = URL_MEAL_CHECK + "/update/meal";
+	public static final String URL_SAVE_NOTICE = URL_MEAL_CHECK + "/save/notice";
 	
 	@Autowired
 	private KindergartenGroupRepository kindergartenGroupRepository;
@@ -78,19 +77,40 @@ public class MealCheckController {
 		return result;
 	}
 	
-	@RequestMapping(value = URL_UPDATE_MEAL)
-	public ResponseEntity<String> updateMeal(@RequestParam String mealId, @RequestParam String eaten) {
+	@RequestMapping(value = URL_UPDATE_MEAL, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ControllerResponse updateMeal(@RequestParam String mealId, @RequestParam String eaten) {
 		try {
 			Long id = Long.valueOf(mealId);
 			Meal meal = this.mealRepository.findOne(id);
-			meal.setEaten(!Boolean.valueOf(eaten));
-			this.mealRepository.save(meal);
+			if(meal != null) {
+				meal.setEaten(!Boolean.valueOf(eaten));
+				this.mealRepository.save(meal);
+			} else {
+				return new ControllerResponse(false, "Essen mit id=" + mealId + "konnte nicht in in der Datenbank gefunden werden.");
+			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return new ControllerResponse(false, "Essensstatus konte nicht aktualisiert werden: " + e.getMessage());
 		}
 		
-		return new ResponseEntity<>("OK", HttpStatus.NO_CONTENT);
+		return new ControllerResponse();
+	}
+	
+	@RequestMapping(value = URL_SAVE_NOTICE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ControllerResponse saveNotice(@RequestParam String mealId, @RequestParam String notice) {
+		try {
+			Long id = Long.valueOf(mealId);
+			Meal meal = this.mealRepository.findOne(id);
+			if(meal != null) {
+				meal.setNotice(notice);
+				this.mealRepository.save(meal);
+			} else {
+				return new ControllerResponse(false, "Essen mit id=" + mealId + "konnte nicht in in der Datenbank gefunden werden.");
+			}
+		} catch(Exception e) {
+			return new ControllerResponse(false, "Notiz konnte nicht zum Essen hinzugefügt werden: " + e.getMessage());
+		}
+		
+		return new ControllerResponse();
 	}
 	
 	private Set<String> getGroups() {

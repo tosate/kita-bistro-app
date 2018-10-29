@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class AdminGroupController {
 	
 	@RequestMapping(value = URL_CREATE_GROUP_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ControllerResponse createGroup(@RequestParam String groupName) {
-		if(groupName == null || groupName.length() == 0) {
+		if(StringUtils.isEmpty(groupName)) {
 			return new ControllerResponse(false, "Ungültiger Bereichsname!");
 		}
 		
@@ -70,7 +71,7 @@ public class AdminGroupController {
 	
 	@RequestMapping(value = URL_UPDATE_GROUP_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ControllerResponse updateGroup(@RequestParam String groupId, @RequestParam String groupName) {
-		if(groupName == null || groupName.length() == 0) {
+		if(StringUtils.isEmpty(groupName)) {
 			return new ControllerResponse(false, "Ungültiger Bereichsname");
 		}
 		

@@ -3,13 +3,29 @@
 	mealTypes = ${mealTypes};
 </script>
 
-<!-- Modal -->
-<div id="actionModalDialog" class="modal fade" tabindex="-1">
-	<div class="modal-dialog" role="document" style="width: 50%;">
+<div id="noticeModalDialog" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
+				<div class="modal-title">Notiz erfassen</div>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="noticeTextarea" class="col-form-label">Notiz</label>
+						<textarea id="noticeTextarea" rows="2" cols="80"></textarea>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">
+					Abbrechen
+				</button>
+				<button type="button" class="btn btn-primary" v-on:click="saveNotice(meal)">
+					Notiz speichern
 				</button>
 			</div>
 		</div>

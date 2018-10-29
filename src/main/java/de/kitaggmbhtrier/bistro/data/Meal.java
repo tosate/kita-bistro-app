@@ -21,6 +21,7 @@ public class Meal {
 	private MealType type;
 	private Date mealDate;
 	private boolean eaten;
+	private String notice;
 	
 	protected Meal() {}
 	
@@ -53,6 +54,22 @@ public class Meal {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Date getMealDate() {
+		return mealDate;
+	}
+
+	public void setMealDate(Date mealDate) {
+		this.mealDate = mealDate;
+	}
+
+	public String getNotice() {
+		return notice;
+	}
+
+	public void setNotice(String notice) {
+		this.notice = notice;
 	}
 	
 }
