@@ -1,6 +1,5 @@
 package de.kitaggmbhtrier.bistro.portal.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -20,7 +19,6 @@ import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenChildComparator;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
 import de.kitaggmbhtrier.bistro.data.Meal;
-import de.kitaggmbhtrier.bistro.data.MealType;
 import de.kitaggmbhtrier.bistro.portal.util.PortalUtil;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenGroupRepository;
@@ -37,9 +35,7 @@ public class AdminChildrenController {
 	private MealRepository mealRepository;
 
 	public static final String URL_FETCH_CHILDREN_JSON = AdminController.URL_ADMIN + "/fetch/children";
-	public static final String URL_CREATE_CHILD_JSON = AdminController.URL_ADMIN + "/create/child";
-
-	private static final String DATE_PATTERN = "yyyy-MM-dd";
+	public static final String URL_CREATE_CHILD_JSON = AdminController.URL_ADMIN + "/save/child";
 
 	@RequestMapping(value = URL_FETCH_CHILDREN_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<KindergartenChild> fetchChildren() {
@@ -54,64 +50,110 @@ public class AdminChildrenController {
 	}
 
 	@RequestMapping(value = URL_CREATE_CHILD_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ControllerResponse createChild(@RequestParam String firstName, @RequestParam String lastName,
-			@RequestParam String groupIdValue, @RequestParam String kitaStartDate, @RequestParam String kitaEndDate,
-			@RequestParam String hasBreakfast, @RequestParam String hasLunch) {
+	public @ResponseBody ControllerResponse saveChild(@RequestParam boolean updateMode, @RequestParam long childId,
+			@RequestParam String firstName, @RequestParam String lastName, @RequestParam long groupId,
+			@RequestParam long kitaStartLong, @RequestParam long kitaEndLong, @RequestParam String hasBreakfast,
+			@RequestParam String hasLunch) {
 		if (StringUtils.isEmpty(firstName)) {
 			return new ControllerResponse(false, "Feld Vorname darf nicht leer sein!");
 		}
 		if (StringUtils.isEmpty(lastName)) {
 			return new ControllerResponse(false, "Feld Nachname darf nicht leer sein!");
 		}
-		if (StringUtils.isEmpty(groupIdValue)) {
-			return new ControllerResponse(false, "Ungültige Gruppen-Id. Kind kann keiner Gruppe zugewiesen werden!");
+		Date kitaStart = new Date(kitaStartLong);
+		Date kitaEnd = new Date(kitaEndLong);
+		if (!kitaStart.before(kitaEnd)) {
+			return new ControllerResponse(false, "Das Startdatum muss vor dem Endedatum liegen!");
 		}
-		long groupId = Long.valueOf(groupIdValue);
 		boolean breakfast = Boolean.valueOf(hasBreakfast);
 		boolean lunch = Boolean.valueOf(hasLunch);
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
 
+		if (updateMode) {
+			return this.updateChild(childId, firstName, lastName, groupId, kitaStart, kitaEnd, breakfast, lunch);
+		} else {
+			return this.createChild(firstName, lastName, groupId, kitaStart, kitaEnd, breakfast, lunch);
+		}
+	}
+
+	private ControllerResponse createChild(String firstName, String lastName, long groupId, Date kitaStart,
+			Date kitaEnd, boolean breakfast, boolean lunch) {
 		try {
-			Date kitaStart = sdf.parse(kitaStartDate);
-			Date kitaEnd = sdf.parse(kitaEndDate);
-			if(!kitaStart.before(kitaEnd)) {
-				return new ControllerResponse(false, "Das Startdatum muss vor dem Endedatum liegen!");
-			}
 			KindergartenChild newChild = new KindergartenChild(firstName, lastName, kitaStart, kitaEnd, breakfast,
 					lunch);
 
-			KindergartenGroup group = kindergartenGroupRepository.findOne(groupId);
-
-			if (group != null) {
-				newChild.setGroup(group);
-			} else {
-				return new ControllerResponse(false, "Es existiert keine Gruppe mit Id: " + groupIdValue);
+			ControllerResponse setGroupResponse = this.setGroup(newChild, groupId);
+			if(!setGroupResponse.isSuccess()) {
+				return setGroupResponse;
 			}
-			
-			Optional<KindergartenChild> alreadyExistingChild = kindergartenChildRepository.findByLastNameAndFirstName(lastName, firstName);
-			if(alreadyExistingChild.isPresent()) {
-				return new ControllerResponse(false, String.format("Kind kann nicht hinzugefügt werden. %s %s existiert bereits in der Datenbank!", firstName, lastName));
+
+			Optional<KindergartenChild> alreadyExistingChild = kindergartenChildRepository
+					.findByLastNameAndFirstName(lastName, firstName);
+			if (alreadyExistingChild.isPresent()) {
+				return new ControllerResponse(false,
+						String.format("Kind kann nicht hinzugefügt werden. %s %s existiert bereits in der Datenbank!",
+								firstName, lastName));
 			}
 
 			kindergartenChildRepository.save(newChild);
-			
+
 			// add todays meals for the new child if they have already been created
 			List<Meal> todaysMeals = mealRepository.findByMealDate(PortalUtil.getToday());
-			if(!todaysMeals.isEmpty() && PortalUtil.isTodayBetweenStartAndEnd(newChild.getKigaStart(), newChild.getKigaEnd())) {
-				if(newChild.getBreakfast()) {
-					Meal bf = new Meal(PortalUtil.getToday(), MealType.BREAKFAST, newChild);
-					mealRepository.save(bf);
-				}
-				
-				if(newChild.getLunch()) {
-					Meal l = new Meal(PortalUtil.getToday(), MealType.LUNCH, newChild);
-					mealRepository.save(l);
-				}
+			if (!todaysMeals.isEmpty()
+					&& PortalUtil.isTodayBetweenStartAndEnd(newChild.getKitaStart(), newChild.getKitaEnd())) {
+				PortalUtil.createTodaysMeals(mealRepository, newChild);
 			}
 		} catch (Exception e) {
 			return new ControllerResponse(false, "Kind konnte nicht hinzugefügt werden: " + e.getMessage());
 		}
 
 		return new ControllerResponse();
+	}
+
+	private ControllerResponse updateChild(long childId, String firstName, String lastName, long groupId, Date kitaStart, Date kitaEnd, boolean breakfast, boolean lunch) {
+		try {
+			KindergartenChild existingChild = kindergartenChildRepository.findOne(childId);
+			if(existingChild == null) {
+				return new ControllerResponse(false, String.format("Kind mit id=%d konnte nicht aktualisiert werden, da es nicht in der Datenbank gefunden wurde!", childId));
+			}
+			existingChild.setFirstName(firstName);
+			existingChild.setLastName(lastName);
+			
+			ControllerResponse setGroupResponse = this.setGroup(existingChild, groupId);
+			if(!setGroupResponse.isSuccess()) {
+				return setGroupResponse;
+			}
+			existingChild.setKitaStart(kitaStart);
+			existingChild.setKitaEnd(kitaEnd);
+			existingChild.setBreakfast(breakfast);
+			existingChild.setLunch(lunch);
+			
+			kindergartenChildRepository.save(existingChild);
+			
+			List<Meal> todaysMeals = mealRepository.findByMealDate(PortalUtil.getToday());
+			// delete meals for existing child
+			for(Meal meal : todaysMeals) {
+				if(meal.getChild().equals(existingChild)) {
+					mealRepository.delete(meal.getId());
+				}
+			}
+			if (!todaysMeals.isEmpty()
+					&& PortalUtil.isTodayBetweenStartAndEnd(existingChild.getKitaStart(), existingChild.getKitaEnd())) {
+				PortalUtil.createTodaysMeals(mealRepository, existingChild);
+			}
+		} catch(Exception e) {
+			return new ControllerResponse(false, "Kind konnte nicht aktualisiert werden: " + e.getMessage());
+		}
+		return new ControllerResponse();
+	}
+	
+	private ControllerResponse setGroup(KindergartenChild child, long groupId) {
+		KindergartenGroup group = kindergartenGroupRepository.findOne(groupId);
+
+		if (group != null) {
+			child.setGroup(group);
+			return new ControllerResponse();
+		} else {
+			return new ControllerResponse(false, "Es existiert keine Gruppe mit Id: " + groupId);
+		}
 	}
 }

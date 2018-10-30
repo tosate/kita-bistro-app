@@ -127,15 +127,8 @@ public class MealCheckController {
 		if (todaysMeals.isEmpty()) {
 			List<Meal> meals = new ArrayList<>();
 			for (KindergartenChild child : kindergartenChildRepository.findAll()) {
-				if (PortalUtil.isTodayBetweenStartAndEnd(child.getKigaStart(), child.getKigaEnd())) {
-					if (child.getBreakfast()) {
-						Meal breakfast = new Meal(PortalUtil.getToday(), MealType.BREAKFAST, child);
-						meals.add(breakfast);
-					}
-					if (child.getLunch()) {
-						Meal lunch = new Meal(PortalUtil.getToday(), MealType.LUNCH, child);
-						meals.add(lunch);
-					}
+				if (PortalUtil.isTodayBetweenStartAndEnd(child.getKitaStart(), child.getKitaEnd())) {
+					PortalUtil.createTodaysMeals(mealRepository, child);
 				}
 			}
 			mealRepository.save(meals);

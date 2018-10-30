@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
+import de.kitaggmbhtrier.bistro.data.Meal;
+import de.kitaggmbhtrier.bistro.data.MealType;
+import de.kitaggmbhtrier.bistro.repository.MealRepository;
 
 
 @Component
@@ -67,10 +70,22 @@ public class PortalUtil {
 		return today.getTime();
 	}
 	
-	public static boolean isTodayBetweenStartAndEnd(Date kigaStart, Date kigaEnd) {
-		if(kigaStart.compareTo(PortalUtil.getToday()) <= 0 && kigaEnd.compareTo(PortalUtil.getToday()) >= 0) {
+	public static boolean isTodayBetweenStartAndEnd(Date kitaStart, Date kitaEnd) {
+		if(kitaStart.compareTo(PortalUtil.getToday()) <= 0 && kitaEnd.compareTo(PortalUtil.getToday()) >= 0) {
 			return true;
 		}
 		return false;
+	}
+	
+	public static void createTodaysMeals(MealRepository mealRepository, KindergartenChild child) {
+		if (child.getBreakfast()) {
+			Meal bf = new Meal(PortalUtil.getToday(), MealType.BREAKFAST, child);
+			mealRepository.save(bf);
+		}
+
+		if (child.getLunch()) {
+			Meal l = new Meal(PortalUtil.getToday(), MealType.LUNCH, child);
+			mealRepository.save(l);
+		}
 	}
 }

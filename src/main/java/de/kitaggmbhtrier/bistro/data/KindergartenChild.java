@@ -20,8 +20,8 @@ public class KindergartenChild {
     private Long id;
     private String firstName;
     private String lastName;
-    private Date kigaStart;
-    private Date kigaEnd;
+    private Date kitaStart;
+    private Date kitaEnd;
     private boolean breakfast;
     private boolean lunch;
     @ManyToOne
@@ -32,12 +32,12 @@ public class KindergartenChild {
     protected KindergartenChild() {
     }
 
-    public KindergartenChild(String firstName, String lastName, Date kigaStart, Date kigaEnd, boolean breakfast,
+    public KindergartenChild(String firstName, String lastName, Date kitaStart, Date kitaEnd, boolean breakfast,
             boolean lunch) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.kigaStart = kigaStart;
-        this.kigaEnd = kigaEnd;
+        this.kitaStart = kitaStart;
+        this.kitaEnd = kitaEnd;
         this.breakfast = breakfast;
         this.lunch = lunch;
     }
@@ -75,20 +75,40 @@ public class KindergartenChild {
 		return attributes;
 	}
 
-	public Date getKigaStart() {
-		return kigaStart;
+	public Date getKitaStart() {
+		return kitaStart;
 	}
 
-	public void setKigaStart(Date kigaStart) {
-		this.kigaStart = kigaStart;
+	public void setKitaStart(Date kitaStart) {
+		this.kitaStart = kitaStart;
 	}
 
-	public Date getKigaEnd() {
-		return kigaEnd;
+	public Date getKitaEnd() {
+		return kitaEnd;
 	}
 
-	public void setKigaEnd(Date kigaEnd) {
-		this.kigaEnd = kigaEnd;
+	public void setKitaEnd(Date kitaEnd) {
+		this.kitaEnd = kitaEnd;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setBreakfast(boolean breakfast) {
+		this.breakfast = breakfast;
+	}
+
+	public void setLunch(boolean lunch) {
+		this.lunch = lunch;
+	}
+
+	public Long getId() {
+		return id;
 	}
 	
 }

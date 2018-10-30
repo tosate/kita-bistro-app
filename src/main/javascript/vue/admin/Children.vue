@@ -13,15 +13,15 @@
 					<form v-on:submit.prevent="onChildFormSubmit">
 						<div class="form-group">
 							<label for="firstNameInput">Vorname</label>
-							<input id="firstNameInput" class="form-control" placeholder="Vorname" required>
+							<input id="firstNameInput" v-model="editChildData.firstName" class="form-control" placeholder="Vorname" required>
 						</div>
 						<div class="form-group">
 							<label for="lastNameInput">Nachname</label>
-							<input id="lastNameInput" class="form-control" placeholder="Nachname" required>
+							<input id="lastNameInput" v-model="editChildData.lastName" class="form-control" placeholder="Nachname" required>
 						</div>
 						<div class="form-group">
 							<label for="kigaGroupSelect">Gruppe</label>
-							<select id="kigaGroupSelect" class="form-control">
+							<select id="kigaGroupSelect" v-model="editChildData.groupId" class="form-control">
 								<option v-for="group in groups" v-bind:value="group.id">
 									{{ group.name }}
 								</option>
@@ -29,21 +29,21 @@
 						</div>
 						<div class="form-group">
 							<label for="kitaStartDateInput">Kita Start</label>
-							<input id="kitaStartDateInput" type="date" required>
+							<input id="kitaStartDateInput" v-model="editChildData.kitaStartString" type="date" required>
 						</div>
 						<div class="form-group">
 							<label for="kitaEndDateInput">Kita Ende</label>
-							<input id="kitaEndDateInput" type="date" required>
+							<input id="kitaEndDateInput" v-model="editChildData.kitaEndString" type="date" required>
 						</div>
 						<div class="form-check">
 							<label for="checkBreakfast">Frühstück</label>
 							<label id="checkBreakfast" class="switch">
-								<input type="checkbox" id="checkboxBreakfast">
+								<input type="checkbox" id="checkboxBreakfast" v-model="editChildData.breakfast">
 								<span class="slider round"></span>
 							</label>
 							<label for="checkLunch">Mittagessen</label>
 							<label id="checkLunch" class="switch">
-								<input type="checkbox" id="checkboxLunch">
+								<input type="checkbox" id="checkboxLunch" v-model="editChildData.lunch">
 								<span class="slider round"></span>
 							</label>
 						</div>
@@ -51,7 +51,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-					<button type="button" class="btn btn-primary" v-on:click="createNewChild">Kind speichern</button>
+					<button type="button" class="btn btn-primary" v-on:click="saveChild(updateMode)">Kind speichern</button>
 				</div>
 			</div>
 		</div>
@@ -101,7 +101,19 @@ export default {
 	data: function () {
 		var data = {
 			children: [],
-			groups: []
+			groups: [],
+			editChildData: {
+				childId: 0,
+				firstName: '',
+				lastName: '',
+				groupId: 0,
+				kitaStartString: this.getDateIso(new Date()),
+				kitaEndString: this.getDateIso(new Date()),
+				breakfast: false,
+				lunch: false,
+				attributes: []
+			},
+			updateMode: false
 		};
 		return data;
 	},
@@ -109,6 +121,20 @@ export default {
 		initChildrenTab: function() {
 			this.fetchGroups();
 			this.fetchChildren();
+		},
+		getDateIso: function(date) {
+			var year = date.getFullYear();
+			var month = date.getMonth() + 1;
+			var dt = date.getDate();
+			
+			if(dt < 10) {
+				dt = '0' + dt;
+			}
+			if(month < 10) {
+				month = '0' + month;
+			}
+			
+			return year + '-' + month + '-' + dt;
 		},
 		fetchChildren: function() {
 			var vm = this;
@@ -139,26 +165,31 @@ export default {
 			});
 		},
 		showModalChildDialog: function() {
-			$("#createEditChildDialog").modal();
-		},
-		createNewChild: function() {
 			var vm = this;
-			$.get("/admin/create/child", {
-				firstName: $("#firstNameInput").val(),
-				lastName: $("#lastNameInput").val(),
-				groupIdValue: $("#kigaGroupSelect").val(),
-				kitaStartDate: $("#kitaStartDateInput").val(),
-				kitaEndDate: $("#kitaEndDateInput").val(),
-				hasBreakfast: $("#checkboxBreakfast").is(":checked"),
-				hasLunch: $("#checkboxLunch").is(":checked")
+			$("#createEditChildDialog").modal();
+			vm.updateMode = false;
+		},
+		saveChild: function(updateMode) {
+			var vm = this;
+			$.get("/admin/save/child", {
+				updateMode: vm.updateMode,
+				childId: vm.editChildData.childId,
+				firstName: vm.editChildData.firstName,
+				lastName: vm.editChildData.lastName,
+				groupId: vm.editChildData.groupId,
+				kitaStartLong: new Date(vm.editChildData.kitaStartString).getTime(),
+				kitaEndLong: new Date(vm.editChildData.kitaEndString).getTime(),
+				hasBreakfast: vm.editChildData.breakfast,
+				hasLunch: vm.editChildData.lunch
 			}).done(function(controllerResponse) {
 				if(controllerResponse.success) {
-					$("#firstNameInput").val('');
-					$("#lastNameInput").val('');
-					$("#kitaStartDateInput").val('');
-					$("#kitaEndDateInput").val('');
-					$("#checkboxBreakfast").prop('checked', false);
-					$("#checkboxLunch").prop('checked', false);
+					vm.editChildData.id = 0;
+					vm.editChildData.firstName = '';
+					vm.editChildData.lastName = '';
+					vm.editChildData.kitaStartString = vm.getDateIso(new Date());
+					vm.editChildData.kitaEndString = vm.getDateIso(new Date());
+					vm.editChildData.breakfast = '';
+					vm.editChildData.lunch;
 					$("#createEditChildDialog").modal('hide');
 					vm.fetchChildren();
 				} else {
@@ -172,13 +203,15 @@ export default {
 		openUpdateChild: function(child) {
 			var vm = this;
 			$("#createEditChildDialog").modal();
-			$("#firstNameInput").val(child.firstName);
-			$("#lastNameInput").val(child.lastName);
-			$("#kigaGroupSelect").val(child.group.id)
-			$("#kitaStartDateInput").val(child.kitaStart);
-			$("#kitaEndDateInput").val(child.kitaEnd);
-			$("#checkboxBreakfast").prop('checked', child.breakfast);
-			$("#checkboxLunch").prop('checked', child.lunch);
+			vm.editChildData.childId = child.id;
+			vm.editChildData.firstName = child.firstName;
+			vm.editChildData.lastName = child.lastName;
+			vm.editChildData.groupId = child.group.id;
+			vm.editChildData.kitaStartString = vm.getDateIso(new Date(child.kitaStart));
+			vm.editChildData.kitaEndString = vm.getDateIso(new Date(child.kitaEnd));
+			vm.editChildData.breakfast = child.breakfast;
+			vm.editChildData.lunch = child.lunch;
+			vm.updateMode = true;
 		}
 	}
 }
