@@ -98,12 +98,12 @@ public class AdminChildrenController {
 			// add todays meals for the new child if they have already been created
 			List<Meal> todaysMeals = mealRepository.findByMealDate(PortalUtil.getToday());
 			if(!todaysMeals.isEmpty() && PortalUtil.isTodayBetweenStartAndEnd(newChild.getKigaStart(), newChild.getKigaEnd())) {
-				if(newChild.getsBreakfast()) {
+				if(newChild.getBreakfast()) {
 					Meal bf = new Meal(PortalUtil.getToday(), MealType.BREAKFAST, newChild);
 					mealRepository.save(bf);
 				}
 				
-				if(newChild.getsLunch()) {
+				if(newChild.getLunch()) {
 					Meal l = new Meal(PortalUtil.getToday(), MealType.LUNCH, newChild);
 					mealRepository.save(l);
 				}

@@ -78,7 +78,7 @@
 						<td>{{child.firstName}}</td>
 						<td>{{child.lastName}}</td>
 						<td>
-							<button class="btn btn-default btn-xs">
+							<button class="btn btn-default btn-xs" @click="openUpdateChild(child)">
 								<span class="glyphicon glyphicon-edit" style="display: block;"></span>
 								Bearbeiten
 							</button>
@@ -168,6 +168,17 @@ export default {
 			}).fail(function (controllerResponse) {
 				alert("Fehler beim Hinzufügen des Kindes: " + controllerResponse.message);
 			});
+		},
+		openUpdateChild: function(child) {
+			var vm = this;
+			$("#createEditChildDialog").modal();
+			$("#firstNameInput").val(child.firstName);
+			$("#lastNameInput").val(child.lastName);
+			$("#kigaGroupSelect").val(child.group.id)
+			$("#kitaStartDateInput").val(child.kitaStart);
+			$("#kitaEndDateInput").val(child.kitaEnd);
+			$("#checkboxBreakfast").prop('checked', child.breakfast);
+			$("#checkboxLunch").prop('checked', child.lunch);
 		}
 	}
 }

@@ -51,11 +51,11 @@ public class KindergartenChild {
 		this.group = group;
 	}
 	
-	public boolean getsBreakfast() {
+	public boolean getBreakfast() {
 		return breakfast;
 	}
 	
-	public boolean getsLunch() {
+	public boolean getLunch() {
 		return lunch;
 	}
 

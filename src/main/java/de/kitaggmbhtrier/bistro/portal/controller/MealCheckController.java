@@ -128,11 +128,11 @@ public class MealCheckController {
 			List<Meal> meals = new ArrayList<>();
 			for (KindergartenChild child : kindergartenChildRepository.findAll()) {
 				if (PortalUtil.isTodayBetweenStartAndEnd(child.getKigaStart(), child.getKigaEnd())) {
-					if (child.getsBreakfast()) {
+					if (child.getBreakfast()) {
 						Meal breakfast = new Meal(PortalUtil.getToday(), MealType.BREAKFAST, child);
 						meals.add(breakfast);
 					}
-					if (child.getsLunch()) {
+					if (child.getLunch()) {
 						Meal lunch = new Meal(PortalUtil.getToday(), MealType.LUNCH, child);
 						meals.add(lunch);
 					}
