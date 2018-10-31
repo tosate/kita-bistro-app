@@ -85,7 +85,7 @@ public class MealCheckController {
 				this.mealRepository.save(meal);
 			} else {
 				return new ControllerResponse(false,
-						"Essen mit id=" + mealId + "konnte nicht in in der Datenbank gefunden werden.");
+						String.format("Essen mit id=%s konnte nicht in in der Datenbank gefunden werden.", mealId));
 			}
 		} catch (NumberFormatException e) {
 			return new ControllerResponse(false, "Essensstatus konte nicht aktualisiert werden: " + e.getMessage());
@@ -104,7 +104,7 @@ public class MealCheckController {
 				this.mealRepository.save(meal);
 			} else {
 				return new ControllerResponse(false,
-						"Essen mit id=" + mealId + "konnte nicht in in der Datenbank gefunden werden.");
+						String.format("Essen mit id=%s konnte nicht in in der Datenbank gefunden werden.", mealId));
 			}
 		} catch (Exception e) {
 			return new ControllerResponse(false, "Notiz konnte nicht zum Essen hinzugefügt werden: " + e.getMessage());

@@ -2,14 +2,11 @@
 <div class="panel-group">
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<form v-on:submit.prevent="onSubmit">
-				<div class="row">
-					<div class="form-group" style="margin-right: 20px;">
-						<label for="nameInput">Name</label>
-						<input id="nameInput" v-model="groupData.name" class="form-control m1-sm-2 mr-sm-4 my-2" required>
-					</div>
-					<button type="submit" class="btn btn-primary my-2">Hinzufügen</button>
-				</div>
+		<div id="groupsError" class="alert alert-danger" role="alert" style="text-align: center; display: none;" ref="alert"></div>
+			<form class="form-inline" v-on:submit.prevent="onSubmit">
+				<label for="nameInput">Name</label>
+				<input id="nameInput" v-model="groupData.name" class="form-control mb-2 mr-sm-2" placeholder="Bereichsname" required>
+				<button type="submit" class="btn btn-primary">Hinzufügen</button>
 			</form>
 		</div>
 	</div>
@@ -88,6 +85,7 @@ export default {
 				vm.groups = data;
 			}).fail(function () {
 				$(vm.$refs.alert).show();
+				$("#groupsError").html("Fehler beim Laden der Bereiche");
 			});
 		},
 		onSubmit: function() {
@@ -101,10 +99,12 @@ export default {
 					vm.fetch();
 				} else {
 					console.log(controllerResponse.message);
-					alert(controllerResponse.message);
+					$(vm.$refs.alert).show();
+					$("#groupsError").html(controllerResponse.message);
 				}
 			}).fail(function (controllerResponse) {
-				alert("Fehler beim Hinzufügen des Bereichs: " + controllerResponse.message);
+				$(vm.$refs.alert).show();
+				$("#groupsError").html("Fehler beim Hinzufügen des Bereichs: " + controllerResponse.message);
 			});
 		},
 		editGroup: function(group) {
@@ -127,10 +127,12 @@ export default {
 					vm.fetch();
 				} else {
 					console.log(controllerResponse.message);
-					alert(controllerResponse.message);
+					$(vm.$refs.alert).show();
+					$("#groupsError").html(controllerResponse.message);
 				}
 			}).fail(function (controllerResponse) {
-				alert("Fehler bei der Aktualisierung des Bereichs: " + controllerResponse.message);
+				$(vm.$refs.alert).show();
+				$("#groupsError").html("Fehler bei der Aktualisierung des Bereichs: " + controllerResponse.message);
 			});
 		},
 		onCancel: function() {
@@ -149,10 +151,12 @@ export default {
 					vm.fetch();
 				} else {
 					console.log(controllerResponse.message);
-					alert(controllerResponse.message);
+					$(vm.$refs.alert).show();
+					$("#groupsError").html(controllerResponse.message);
 				}
 			}).fail( function (controllerResponse) {
-				alert("Fehler beim Löschen des Bereichs: " + controllerResponse.message);
+				$(vm.$refs.alert).show();
+				$("#groupsError").html("Fehler beim Löschen des Bereichs: " + controllerResponse.message);
 			});
 		}
 	}

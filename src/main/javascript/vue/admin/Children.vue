@@ -10,7 +10,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<div id="confirmDeleteDialogError" class="alert alert-danger" role="alert" style="text-align: center; display: none" ref="deleteAlert"></div>
+					<div id="confirmDeleteDialogError" class="alert alert-danger" role="alert" style="text-align: center; display: none;" ref="deleteAlert"></div>
 					{{ editChildData.firstName}} {{ editChildData.lastName }} wirklich löschen?
 				</div>
 				<div class="modal-footer">
@@ -30,7 +30,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<div id="createEditChildDialogError" class="alert alert-danger" role="alert" style="text-align: center; display: none" ref="saveAlert"></div>
+					<div id="createEditChildDialogError" class="alert alert-danger" role="alert" style="text-align: center; display: none;" ref="saveAlert"></div>
 					<form v-on:submit.prevent="onChildFormSubmit">
 						<div class="form-group">
 							<label for="firstNameInput">Vorname</label>
@@ -79,7 +79,7 @@
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<div id="error" class="alert alert-danger" role="alert" style="text-align: center; display: none" ref="alert"></div>
+			<div id="childrenError" class="alert alert-danger" role="alert" style="text-align: center; display: none;" ref="alert"></div>
 			<button type="button" class="btn btn-default" v-on:click="openModalChildDialog">Kind hinzufügen</button>
 		</div>
 	</div>
@@ -174,6 +174,7 @@ export default {
 				vm.children = data;
 			}).fail(function() {
 				$(vm.$refs.alert).show();
+				$("#childrenError").html("Fehler beim Laden der Kinder!");
 			});
 		},
 		fetchGroups: function() {
@@ -185,6 +186,7 @@ export default {
 				vm.groups = data;
 			}).fail(function () {
 				$(vm.$refs.alert).show();
+				$("#childrenError").html("Fehler beim Laden der Bereiche!");
 			});
 		},
 		onKeyUp: function() {

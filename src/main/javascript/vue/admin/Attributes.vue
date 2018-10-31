@@ -2,18 +2,13 @@
 <div class="panel-group">
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<form v-on:submit.prevent="onSubmit">
-				<div class="row">
-					<div class="form-group" style="margin-right: 20px;">
-						<label for="classificationInput">Kategorie</label>
-						<input id="classificationInput" v-model="attributeData.classification" class="form-control m1-sm-2 mr-sm-4 my-2" required>
-					</div>
-					<div class="form-group" style="margin-right: 20px;">
-						<label for="nameInput">Name</label>
-						<input id="nameInput" v-model="attributeData.name" class="form-control m1-sm-2 mr-sm-4 my-2" required>
-					</div>
-					<button type="submit" class="btn btn-primary my-2">Hinzufügen</button>
-				</div>
+			<div id="attributesError" class="alert alert-danger" role="alert" style="text-align: center; display: none;" ref="alert"></div>
+			<form class="form-inline" v-on:submit.prevent="onSubmit">
+				<label for="classificationInput">Kategorie</label>
+				<input id="classificationInput" v-model="attributeData.classification" class="form-control mb-2 mr-sm-2" required>
+				<label for="nameInput">Name</label>
+				<input id="nameInput" v-model="attributeData.name" class="form-control mb-2 mr-sm-2" required>
+				<button type="submit" class="btn btn-primary my-2">Hinzufügen</button>
 			</form>
 		</div>
 	</div>
@@ -93,6 +88,7 @@ export default {
 				vm.attributes = data;
 			}).fail(function () {
 				$(vm.$refs.alert).show();
+				$("#attributesError").html("Fehler beim Laden der Besonderheiten");
 			});
 		},
 		onSubmit: function() {
@@ -108,10 +104,12 @@ export default {
 					vm.fetch();
 				} else {
 					console.log(controllerResponse.message);
-					alert(controllerResponse.message);
+					$(vm.$refs.alert).show();
+					$("#attributesError").html("Fehler beim Anlegen der Besonderheit");
 				}
 			}).fail(function (controllerResponse) {
-				alert("Fehler beim Hinzufügen der Besonderheit: " + controllerResponse.message);
+				$(vm.$refs.alert).show();
+				$("#attributesError").html("Fehler beim Hinzufügen der Besonderheit: " + controllerResponse.message);
 			});
 		},
 		editAttribute: function(attribute) {
@@ -137,10 +135,12 @@ export default {
 					vm.fetch();
 				} else {
 					console.log(controllerResponse.message);
-					alert(controllerResponse.message);
+					$(vm.$refs.alert).show();
+					$("#attributesError").html(controllerResponse.message);
 				}
 			}).fail(function (controllerResponse) {
-				alert("Fehler bei der Aktualisierung der Besonderheit: " + controllerResponse.message);
+				$(vm.$refs.alert).show();
+				$("#attributesError").html("Fehler bei der Aktualisierung der Besonderheit: " + controllerResponse.message);
 			});
 		},
 		onCancel: function() {
@@ -160,10 +160,12 @@ export default {
 					vm.fetch();
 				} else {
 					console.log(controllerResponse.message);
-					alert(controllerResponse.message);
+					$(vm.$refs.alert).show();
+					$("#attributesError").html(controllerResponse.message);
 				}
 			}).fail( function (controllerResponse) {
-				alert("Fehler beim Löschen der Besonderheit: " + controllerResponse.message);
+				$(vm.$refs.alert).show();
+				$("#attributesError").html("Fehler beim Löschen der Besonderheit: " + controllerResponse.message);
 			});
 		}
 	}
