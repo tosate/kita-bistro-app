@@ -33,6 +33,8 @@ $(document).ready(function () {
 		data: lastNames
 	});
 	
+	childrenComponentVue.initChildrenTab();
+	
 	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
 		var anchorEle = e.target;
 		var tabname = $(anchorEle).data("tabname");

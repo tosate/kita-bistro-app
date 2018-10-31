@@ -36,6 +36,7 @@ public class AdminChildrenController {
 
 	public static final String URL_FETCH_CHILDREN_JSON = AdminController.URL_ADMIN + "/fetch/children";
 	public static final String URL_CREATE_CHILD_JSON = AdminController.URL_ADMIN + "/save/child";
+	public static final String URL_DELETE_CHILD_JSON = AdminController.URL_ADMIN + "/delete/child";
 
 	@RequestMapping(value = URL_FETCH_CHILDREN_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<KindergartenChild> fetchChildren() {
@@ -113,7 +114,7 @@ public class AdminChildrenController {
 		try {
 			KindergartenChild existingChild = kindergartenChildRepository.findOne(childId);
 			if(existingChild == null) {
-				return new ControllerResponse(false, String.format("Kind mit id=%d konnte nicht aktualisiert werden, da es nicht in der Datenbank gefunden wurde!", childId));
+				return new ControllerResponse(false, String.format("Kind mit Id=%d konnte nicht aktualisiert werden, da es nicht in der Datenbank gefunden wurde!", childId));
 			}
 			existingChild.setFirstName(firstName);
 			existingChild.setLastName(lastName);
@@ -155,5 +156,21 @@ public class AdminChildrenController {
 		} else {
 			return new ControllerResponse(false, "Es existiert keine Gruppe mit Id: " + groupId);
 		}
+	}
+	
+	@RequestMapping(value = URL_DELETE_CHILD_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ControllerResponse deleteChild(@RequestParam long childId) {
+		KindergartenChild child = kindergartenChildRepository.findOne(childId);
+		if(child == null) {
+			return new ControllerResponse(false, String.format("Löschen fehlgeschlagen. Kein Kind mit Id=%d in Datenbank gefunden!", childId));
+		}
+		
+		// Remove all Meals
+		List<Meal> meals = mealRepository.findByChild_Id(childId);
+		mealRepository.delete(meals);
+		
+		kindergartenChildRepository.delete(childId);
+		
+		return new ControllerResponse();
 	}
 }

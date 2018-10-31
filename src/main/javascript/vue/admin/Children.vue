@@ -1,15 +1,36 @@
 <template>
 <div class="panel-group">
-	<div id="createEditChildDialog" class="modal fade" tabindex="-1" role="dialog">
+	<div id="confirmDeleteDialog" class="modal fade" tabindx="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<div class="modal-title">Kind hinzufügen</div>
+					<div class="modal-title">Kind löschen</div>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
+					<div id="confirmDeleteDialogError" class="alert alert-danger" role="alert" style="text-align: center; display: none" ref="deleteAlert"></div>
+					{{ editChildData.firstName}} {{ editChildData.lastName }} wirklich löschen?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+					<button type="button" class="btn btn-primary" v-on:click="deleteChild">Kind löschen</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="createEditChildDialog" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="modal-title">Kind speichern</div>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="createEditChildDialogError" class="alert alert-danger" role="alert" style="text-align: center; display: none" ref="saveAlert"></div>
 					<form v-on:submit.prevent="onChildFormSubmit">
 						<div class="form-group">
 							<label for="firstNameInput">Vorname</label>
@@ -58,7 +79,8 @@
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<button type="button" class="btn btn-default" v-on:click="showModalChildDialog">Kind hinzufügen</button>
+			<div id="error" class="alert alert-danger" role="alert" style="text-align: center; display: none" ref="alert"></div>
+			<button type="button" class="btn btn-default" v-on:click="openModalChildDialog">Kind hinzufügen</button>
 		</div>
 	</div>
 	<div class="panel panel-default">
@@ -78,11 +100,11 @@
 						<td>{{child.firstName}}</td>
 						<td>{{child.lastName}}</td>
 						<td>
-							<button class="btn btn-default btn-xs" @click="openUpdateChild(child)">
+							<button class="btn btn-default btn-xs" v-on:click="openUpdateChild(child)">
 								<span class="glyphicon glyphicon-edit" style="display: block;"></span>
 								Bearbeiten
 							</button>
-							<button class="btn btn-default btn-xs">
+							<button class="btn btn-default btn-xs" v-on:click="openConfirmDeleteChild(child)">
 								<span class="glyphicon glyphicon-trash" style="display: block;"></span>
 								Löschen
 							</button>
@@ -136,6 +158,13 @@ export default {
 			
 			return year + '-' + month + '-' + dt;
 		},
+		stringDateToLong: function(date) {
+			if(date != null) {
+				return new Date(date).getTime();
+			} else {
+				return newDate().getTime();
+			}
+		},
 		fetchChildren: function() {
 			var vm = this;
 			$.get("admin/fetch/children" , {
@@ -164,9 +193,16 @@ export default {
 				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 			});
 		},
-		showModalChildDialog: function() {
+		openModalChildDialog: function() {
 			var vm = this;
 			$("#createEditChildDialog").modal();
+			vm.editChildData.id = 0;
+			vm.editChildData.firstName = '';
+			vm.editChildData.lastName = '';
+			vm.editChildData.kitaStartString = vm.getDateIso(new Date());
+			vm.editChildData.kitaEndString = vm.getDateIso(new Date());
+			vm.editChildData.breakfast = '';
+			vm.editChildData.lunch;
 			vm.updateMode = false;
 		},
 		saveChild: function(updateMode) {
@@ -177,27 +213,23 @@ export default {
 				firstName: vm.editChildData.firstName,
 				lastName: vm.editChildData.lastName,
 				groupId: vm.editChildData.groupId,
-				kitaStartLong: new Date(vm.editChildData.kitaStartString).getTime(),
-				kitaEndLong: new Date(vm.editChildData.kitaEndString).getTime(),
+				kitaStartLong: vm.stringDateToLong(vm.editChildData.kitaStartString),
+				kitaEndLong: vm.stringDateToLong(vm.editChildData.kitaEndString),
 				hasBreakfast: vm.editChildData.breakfast,
 				hasLunch: vm.editChildData.lunch
 			}).done(function(controllerResponse) {
 				if(controllerResponse.success) {
-					vm.editChildData.id = 0;
-					vm.editChildData.firstName = '';
-					vm.editChildData.lastName = '';
-					vm.editChildData.kitaStartString = vm.getDateIso(new Date());
-					vm.editChildData.kitaEndString = vm.getDateIso(new Date());
-					vm.editChildData.breakfast = '';
-					vm.editChildData.lunch;
+					$(vm.$refs.saveAlert).hide();
 					$("#createEditChildDialog").modal('hide');
 					vm.fetchChildren();
 				} else {
+					$(vm.$refs.saveAlert).show();
 					console.log(controllerResponse.message);
-					alert(controllerResponse.message);
+					$("#createEditChildDialogError").html(controllerResponse.message);
 				}
 			}).fail(function (controllerResponse) {
-				alert("Fehler beim Hinzufügen des Kindes: " + controllerResponse.message);
+				$(vm.$refs.saveAlert).show();
+				$("#createEditChildDialogError").html("Fehler beim Hinzufügen des Kindes: " + controllerResponse.message);
 			});
 		},
 		openUpdateChild: function(child) {
@@ -212,6 +244,37 @@ export default {
 			vm.editChildData.breakfast = child.breakfast;
 			vm.editChildData.lunch = child.lunch;
 			vm.updateMode = true;
+		},
+		openConfirmDeleteChild: function(child) {
+			var vm = this;
+			$("#confirmDeleteDialog").modal();
+			vm.editChildData.childId = child.id;
+			vm.editChildData.firstName = child.firstName;
+			vm.editChildData.lastName = child.lastName;
+			vm.editChildData.groupId = child.group.id;
+			vm.editChildData.kitaStartString = vm.getDateIso(new Date(child.kitaStart));
+			vm.editChildData.kitaEndString = vm.getDateIso(new Date(child.kitaEnd));
+			vm.editChildData.breakfast = child.breakfast;
+			vm.editChildData.lunch = child.lunch;
+		},
+		deleteChild: function() {
+			var vm = this;
+			$.get("/admin/delete/child", {
+				childId: vm.editChildData.childId
+			}).done(function(controllerResponse) {
+				if(controllerResponse.success) {
+					$(vm.$refs.deleteAlert).hide();
+					$("#createEditChildDialog").modal('hide');
+					vm.fetchChildren();
+				} else {
+					console.log(controllerResponse.message);
+					$(vm.$refs.deleteAlert).show();
+					$("#confirmDeleteDialogError").html(controllerResponse.message);
+				}
+			}).fail(function (controllerResponse) {
+				$(vm.$refs.deleteAlert).show();
+				$("#confirmDeleteDialogError").html("Fehler beim Löschen des Kindes: " + controllerResponse.message);
+			});
 		}
 	}
 }
