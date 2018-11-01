@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -114,7 +116,7 @@ public class MealCheckController {
 	}
 
 	private Set<String> getGroups() {
-		Set<String> groups = new HashSet<>();
+		SortedSet<String> groups = new TreeSet<String>();
 		for (KindergartenGroup group : kindergartenGroupRepository.findAll()) {
 			groups.add(group.getName());
 		}

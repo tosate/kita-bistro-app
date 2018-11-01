@@ -110,5 +110,9 @@ public class KindergartenChild {
 	public Long getId() {
 		return id;
 	}
+
+	public void setAttributes(List<ChildAttribute> attributes) {
+		this.attributes = attributes;
+	}
 	
 }

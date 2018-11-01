@@ -1,6 +1,7 @@
 package de.kitaggmbhtrier.bistro.portal.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
+import de.kitaggmbhtrier.bistro.data.KindergartenGroupComparator;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenGroupRepository;
 
@@ -37,6 +39,7 @@ public class AdminGroupController {
 		while(groupIterator.hasNext()) {
 			result.add(groupIterator.next());
 		}
+		Collections.sort(result, new KindergartenGroupComparator());
 		return result;
 	}
 	

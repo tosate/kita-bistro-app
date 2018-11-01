@@ -1,6 +1,7 @@
 package de.kitaggmbhtrier.bistro.portal.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.kitaggmbhtrier.bistro.data.ChildAttribute;
+import de.kitaggmbhtrier.bistro.data.ChildAttributeComparator;
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.repository.ChildAttributeRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
@@ -37,6 +39,7 @@ public class AdminAttributeController {
 		while(attributeIterator.hasNext()) {
 			result.add(attributeIterator.next());
 		}
+		Collections.sort(result, new ChildAttributeComparator());
 		return result;
 	}
 	

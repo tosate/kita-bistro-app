@@ -68,6 +68,38 @@
 								<span class="slider round"></span>
 							</label>
 						</div>
+						<div class="row">
+							<div class="col-xs-5">
+								<label for="allAttributesList">Alle Besonderheiten</label>
+								<select id="allAttributesList" class="form-control" multiple="multiple" size="8">
+									<option v-for="attribute in attributesPickList" v-bind:value="attribute.id">
+										{{ attribute.name }}
+									</option>
+								</select>
+							</div>
+							<div class="col-xs-2">
+								<button type="button" class="btn btn-block" v-on:click="moveAllOptionsToSelectedList" style="margin-top: 30px;">
+									<span class="glyphicon glyphicon-forward" style="display: block;"></span>
+								</button>
+								<button type="button" class="btn btn-block" v-on:click="moveOptionToSelectedList">
+									<span class="glyphicon glyphicon-chevron-right" style="display: block;"></span>
+								</button>
+								<button type="button" class="btn btn-block" v-on:click="moveOptionToPickList">
+									<span class="glyphicon glyphicon-chevron-left" style="display: block;"></span>
+								</button>
+								<button type="button" class="btn btn-block" v-on:click="moveAllOptionsToPickList">
+									<span class="glyphicon glyphicon-backward" style="display: block;"></span>
+								</button>
+							</div>
+							<div class="col-xs-5">
+								<label for="selectedAttributesList">Gewählte Besonderheiten</label>
+								<select id="selectedAttributesList" class="form-control" multiple="multiple" size="8">
+									<option v-for="attribute in editChildData.attributes" v-bind:value="attribute.id">
+										{{ attribute.name }}
+									</option>
+								</select>
+							</div>
+						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -124,6 +156,8 @@ export default {
 		var data = {
 			children: [],
 			groups: [],
+			allAttributes: [],
+			attributesPickList: [],
 			editChildData: {
 				childId: 0,
 				firstName: '',
@@ -143,6 +177,7 @@ export default {
 		initChildrenTab: function() {
 			this.fetchGroups();
 			this.fetchChildren();
+			this.fetchAttributes();
 		},
 		getDateIso: function(date) {
 			var year = date.getFullYear();
@@ -189,6 +224,18 @@ export default {
 				$("#childrenError").html("Fehler beim Laden der Bereiche!");
 			});
 		},
+		fetchAttributes: function() {
+			var vm = this;
+			$.get("/admin/fetch/attributes", {
+			}).done(function(data) {
+				$(vm.$refs.alert).hide();
+				console.log(data);
+				vm.allAttributes = data;
+			}).fail(function() {
+				$(vm.$refs.alert).show();
+				$("#childError").html("Fehler beim Laden der Besonderheiten!");
+			});
+		},
 		onKeyUp: function() {
 			var value = $("#filterInput").val().toLowerCase();
 			$("#childrenTable tr").filter(function() {
@@ -205,6 +252,8 @@ export default {
 			vm.editChildData.kitaEndString = vm.getDateIso(new Date());
 			vm.editChildData.breakfast = '';
 			vm.editChildData.lunch;
+			vm.editChildData.attributes = [];
+			vm.attributesPickList = vm.allAttributes.slice();
 			vm.updateMode = false;
 		},
 		saveChild: function(updateMode) {
@@ -218,7 +267,8 @@ export default {
 				kitaStartLong: vm.stringDateToLong(vm.editChildData.kitaStartString),
 				kitaEndLong: vm.stringDateToLong(vm.editChildData.kitaEndString),
 				hasBreakfast: vm.editChildData.breakfast,
-				hasLunch: vm.editChildData.lunch
+				hasLunch: vm.editChildData.lunch,
+				attributes: this.getSelectedAttributeIds()
 			}).done(function(controllerResponse) {
 				if(controllerResponse.success) {
 					$(vm.$refs.saveAlert).hide();
@@ -245,6 +295,8 @@ export default {
 			vm.editChildData.kitaEndString = vm.getDateIso(new Date(child.kitaEnd));
 			vm.editChildData.breakfast = child.breakfast;
 			vm.editChildData.lunch = child.lunch;
+			vm.editChildData.attributes = child.attributes;
+			this.calculateAttributesPickList(vm.editChildData.attributes);
 			vm.updateMode = true;
 		},
 		openConfirmDeleteChild: function(child) {
@@ -258,6 +310,7 @@ export default {
 			vm.editChildData.kitaEndString = vm.getDateIso(new Date(child.kitaEnd));
 			vm.editChildData.breakfast = child.breakfast;
 			vm.editChildData.lunch = child.lunch;
+			vm.editChildData.attributes = child.attributes;
 		},
 		deleteChild: function() {
 			var vm = this;
@@ -277,6 +330,45 @@ export default {
 				$(vm.$refs.deleteAlert).show();
 				$("#confirmDeleteDialogError").html("Fehler beim Löschen des Kindes: " + controllerResponse.message);
 			});
+		},
+		moveAllOptionsToSelectedList: function() {
+			$("#allAttributesList > option").each(function() {
+				$(this).remove().appendTo("#selectedAttributesList");
+			});
+		},
+		moveOptionToSelectedList: function() {
+			$("#allAttributesList > option:selected").each(function() {
+				$(this).remove().appendTo("#selectedAttributesList");
+			});
+		},
+		moveOptionToPickList: function() {
+			$("#selectedAttributesList > option:selected").each(function() {
+				$(this).remove().appendTo("#allAttributesList");
+			});
+		},
+		moveAllOptionsToPickList: function() {
+			$("#selectedAttributesList > option").each(function() {
+				$(this).remove().appendTo("#allAttributesList");
+			});
+		},
+		calculateAttributesPickList: function(attributes) {
+			var vm = this;
+			vm.attributesPickList = vm.allAttributes.slice();
+			attributes.forEach(function(attribute) {
+				var index = vm.attributesPickList.map(function(attrib) {
+					return attrib.id;
+				}).indexOf(attribute.id);
+				if(index >= 0) {
+					vm.attributesPickList.splice(index, 1);
+				}
+			});
+		},
+		getSelectedAttributeIds: function() {
+			var result = [];
+			$("#selectedAttributesList > option").each(function() {
+				result.push($(this).val());
+			});
+			return result;
 		}
 	}
 }

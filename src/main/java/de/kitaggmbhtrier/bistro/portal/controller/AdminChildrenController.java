@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.kitaggmbhtrier.bistro.data.ChildAttribute;
 import de.kitaggmbhtrier.bistro.data.KindergartenChild;
 import de.kitaggmbhtrier.bistro.data.KindergartenChildComparator;
 import de.kitaggmbhtrier.bistro.data.KindergartenGroup;
 import de.kitaggmbhtrier.bistro.data.Meal;
 import de.kitaggmbhtrier.bistro.portal.util.PortalUtil;
+import de.kitaggmbhtrier.bistro.repository.ChildAttributeRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenChildRepository;
 import de.kitaggmbhtrier.bistro.repository.KindergartenGroupRepository;
 import de.kitaggmbhtrier.bistro.repository.MealRepository;
@@ -31,6 +33,8 @@ public class AdminChildrenController {
 	private KindergartenChildRepository kindergartenChildRepository;
 	@Autowired
 	private KindergartenGroupRepository kindergartenGroupRepository;
+	@Autowired
+	private ChildAttributeRepository childAttributeRepository;
 	@Autowired
 	private MealRepository mealRepository;
 
@@ -54,7 +58,7 @@ public class AdminChildrenController {
 	public @ResponseBody ControllerResponse saveChild(@RequestParam boolean updateMode, @RequestParam long childId,
 			@RequestParam String firstName, @RequestParam String lastName, @RequestParam long groupId,
 			@RequestParam long kitaStartLong, @RequestParam long kitaEndLong, @RequestParam String hasBreakfast,
-			@RequestParam String hasLunch) {
+			@RequestParam String hasLunch, @RequestParam(value = "attributes[]", required = false) long[] attributes) {
 		if (StringUtils.isEmpty(firstName)) {
 			return new ControllerResponse(false, "Feld Vorname darf nicht leer sein!");
 		}
@@ -70,14 +74,14 @@ public class AdminChildrenController {
 		boolean lunch = Boolean.valueOf(hasLunch);
 
 		if (updateMode) {
-			return this.updateChild(childId, firstName, lastName, groupId, kitaStart, kitaEnd, breakfast, lunch);
+			return this.updateChild(childId, firstName, lastName, groupId, kitaStart, kitaEnd, breakfast, lunch, attributes);
 		} else {
-			return this.createChild(firstName, lastName, groupId, kitaStart, kitaEnd, breakfast, lunch);
+			return this.createChild(firstName, lastName, groupId, kitaStart, kitaEnd, breakfast, lunch, attributes);
 		}
 	}
 
 	private ControllerResponse createChild(String firstName, String lastName, long groupId, Date kitaStart,
-			Date kitaEnd, boolean breakfast, boolean lunch) {
+			Date kitaEnd, boolean breakfast, boolean lunch, long[] attributeIds) {
 		try {
 			KindergartenChild newChild = new KindergartenChild(firstName, lastName, kitaStart, kitaEnd, breakfast,
 					lunch);
@@ -93,6 +97,12 @@ public class AdminChildrenController {
 				return new ControllerResponse(false,
 						String.format("Kind kann nicht hinzugefügt werden. %s %s existiert bereits in der Datenbank!",
 								firstName, lastName));
+			}
+			if(attributeIds != null) {
+				ControllerResponse setAttributesResponse = this.setAttributes(newChild, attributeIds);
+				if(!setAttributesResponse.isSuccess()) {
+					return setAttributesResponse;
+				}
 			}
 
 			kindergartenChildRepository.save(newChild);
@@ -110,7 +120,7 @@ public class AdminChildrenController {
 		return new ControllerResponse();
 	}
 
-	private ControllerResponse updateChild(long childId, String firstName, String lastName, long groupId, Date kitaStart, Date kitaEnd, boolean breakfast, boolean lunch) {
+	private ControllerResponse updateChild(long childId, String firstName, String lastName, long groupId, Date kitaStart, Date kitaEnd, boolean breakfast, boolean lunch, long[] attributeIds) {
 		try {
 			KindergartenChild existingChild = kindergartenChildRepository.findOne(childId);
 			if(existingChild == null) {
@@ -127,6 +137,12 @@ public class AdminChildrenController {
 			existingChild.setKitaEnd(kitaEnd);
 			existingChild.setBreakfast(breakfast);
 			existingChild.setLunch(lunch);
+			if(attributeIds != null) {
+				ControllerResponse setAttributesResponse = this.setAttributes(existingChild, attributeIds);
+				if(!setAttributesResponse.isSuccess()) {
+					return setAttributesResponse;
+				}
+			}
 			
 			kindergartenChildRepository.save(existingChild);
 			
@@ -144,6 +160,20 @@ public class AdminChildrenController {
 		} catch(Exception e) {
 			return new ControllerResponse(false, "Kind konnte nicht aktualisiert werden: " + e.getMessage());
 		}
+		return new ControllerResponse();
+	}
+	
+	private ControllerResponse setAttributes(KindergartenChild child, long[] attributeIds) {
+		List<ChildAttribute> attributes = new ArrayList<>();
+		for(int i=0; i<attributeIds.length; i++) {
+			ChildAttribute attribute = childAttributeRepository.findOne(attributeIds[i]);
+			if(attribute != null) {
+				attributes.add(attribute);
+			} else {
+				return new ControllerResponse(false, String.format("Keine Besonderheit mit Id=%d in Datenbank gefunden!", attributeIds[i]));
+			}
+		}
+		child.setAttributes(attributes);
 		return new ControllerResponse();
 	}
 	
