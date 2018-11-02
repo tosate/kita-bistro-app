@@ -28,12 +28,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();	// FIXME: For now disable CSRF until all forms and ajax calls would be updated ...
+		http.headers().frameOptions().disable();
 		http
 			.authorizeRequests()
 			.antMatchers("/").permitAll()
 			.antMatchers("/mealcheck/**").permitAll()
-			.antMatchers("/login", "/", "/favicon.ico", "/webjars/**", "/css/**", "/img/**").permitAll()
-			.antMatchers("/admin", "/h2-console/**").authenticated()
+			.antMatchers("/login", "/", "/favicon.ico", "/webjars/**", "/css/**", "/img/**").permitAll().and()
+			.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+			.antMatchers("/admin").authenticated()
 			.and().formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl(MealCheckController.URL_MEAL_CHECK).permitAll();
 //			.and().rememberMe().rememberMeServices(rememberMeService(rememberMeKey)).key(rememberMeKey).tokenValiditySeconds(rememberMeTokenValiditySeconds);
 		
