@@ -254,6 +254,7 @@ export default {
 			vm.editChildData.lunch;
 			vm.editChildData.attributes = [];
 			vm.attributesPickList = vm.allAttributes.slice();
+			vm.moveAllOptionsToPickList();
 			vm.updateMode = false;
 		},
 		saveChild: function(updateMode) {
@@ -295,7 +296,8 @@ export default {
 			vm.editChildData.kitaEndString = vm.getDateIso(new Date(child.kitaEnd));
 			vm.editChildData.breakfast = child.breakfast;
 			vm.editChildData.lunch = child.lunch;
-			vm.editChildData.attributes = child.attributes;
+			vm.moveAllOptionsToPickList();
+			vm.editChildData.attributes = child.attributes.slice();
 			this.calculateAttributesPickList(vm.editChildData.attributes);
 			vm.updateMode = true;
 		},
@@ -310,7 +312,7 @@ export default {
 			vm.editChildData.kitaEndString = vm.getDateIso(new Date(child.kitaEnd));
 			vm.editChildData.breakfast = child.breakfast;
 			vm.editChildData.lunch = child.lunch;
-			vm.editChildData.attributes = child.attributes;
+			vm.editChildData.attributes = child.attributes.slice();
 		},
 		deleteChild: function() {
 			var vm = this;
