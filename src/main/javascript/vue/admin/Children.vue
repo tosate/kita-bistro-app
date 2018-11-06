@@ -250,8 +250,8 @@ export default {
 			vm.editChildData.lastName = '';
 			vm.editChildData.kitaStartString = vm.getDateIso(new Date());
 			vm.editChildData.kitaEndString = vm.getDateIso(new Date());
-			vm.editChildData.breakfast = '';
-			vm.editChildData.lunch;
+			vm.editChildData.breakfast = false;
+			vm.editChildData.lunch = false;
 			vm.editChildData.attributes = [];
 			vm.attributesPickList = vm.allAttributes.slice();
 			vm.moveAllOptionsToPickList();
@@ -298,7 +298,7 @@ export default {
 			vm.editChildData.lunch = child.lunch;
 			vm.moveAllOptionsToPickList();
 			vm.editChildData.attributes = child.attributes.slice();
-			this.calculateAttributesPickList(vm.editChildData.attributes);
+			vm.calculateAttributesPickList(vm.editChildData.attributes);
 			vm.updateMode = true;
 		},
 		openConfirmDeleteChild: function(child) {
@@ -356,12 +356,14 @@ export default {
 		calculateAttributesPickList: function(attributes) {
 			var vm = this;
 			vm.attributesPickList = vm.allAttributes.slice();
+			vm.moveAllOptionsToPickList();
 			attributes.forEach(function(attribute) {
 				var index = vm.attributesPickList.map(function(attrib) {
 					return attrib.id;
 				}).indexOf(attribute.id);
 				if(index >= 0) {
 					vm.attributesPickList.splice(index, 1);
+					$('#allAttributesList > option[value="' + attribute.id + '"]').remove().appendTo('#selectedAttributesList');
 				}
 			});
 		},
