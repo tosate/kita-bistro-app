@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS kindergarten_child (
 	lunch BOOLEAN NOT NULL,
 	group_id BIGINT(19) NOT NULL);
 
+CREATE INDEX IF NOT EXISTS idx_last_name ON kindergarten_child(last_name);
+CREATE INDEX IF NOT EXISTS idx_last_first_name ON kindergarten_child(last_name, first_name);
+
 CREATE TABLE IF NOT EXISTS kindergarten_child_attributes (
 	kindergarten_child_id BIGINT(19) NOT NULL,
 	attributes_id BIGINT(19) NOT NULL);
@@ -32,4 +35,7 @@ CREATE TABLE IF NOT EXISTS meal (
 	notice VARCHAR(255),
 	type INTEGER(10),
 	child_id BIGINT(19));
+
+CREATE INDEX IF NOT EXISTS idx_date ON meal (meal_date);
+CREATE INDEX IF NOT EXISTS idx_date_type ON meal (meal_date, type);
 

@@ -97,10 +97,9 @@ public class MealCheckController {
 	}
 
 	@RequestMapping(value = URL_SAVE_NOTICE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ControllerResponse saveNotice(@RequestParam String mealId, @RequestParam String notice) {
+	public @ResponseBody ControllerResponse saveNotice(@RequestParam long mealId, @RequestParam String notice) {
 		try {
-			Long id = Long.valueOf(mealId);
-			Meal meal = this.mealRepository.findOne(id);
+			Meal meal = this.mealRepository.findOne(mealId);
 			if (meal != null) {
 				meal.setNotice(notice);
 				this.mealRepository.save(meal);
