@@ -64,4 +64,25 @@ $(document).ready(function () {
 		// Stop propagation to avoid bubbling up parsley event
 //		e.stopImmediatePropagation()
 	});
+	
+	$('#saveNotice').click(function() {
+		var vm = this;
+		$.get("/mealcheck/save/notice", {
+			mealId: $("#mealId").val(),
+			notice: $("#noticeTextarea").val()
+		}).done(function(controllerResponse) {
+			if(controllerResponse.success) {
+				$("#noticeDialogError").hide();
+				$("#noticeModalDialog").modal('hide');
+				$("#searchForm").submit();
+			} else {
+				console.log(controllerResponse.message);
+				$("#noticeDialogError").show();
+				$("#noticeDialogError").html(controllerResponse.message);
+			}
+		}).fail(function(controllerResponse) {
+			$("#noticeDialogError").show();
+			$("#noticeDialogError").html("Fehler beim Speichern der Notiz: " + controllerResponse.message);
+		});
+	});
 });

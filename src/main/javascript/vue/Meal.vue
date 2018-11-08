@@ -1,34 +1,5 @@
 <template>
 <div class="meal-panel">
-	<div id="noticeModalDialog" class="modal fade" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<div class="modal-title">Notiz erfassen</div>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div id="noticeDialogError" class="alert alert-danger" role="alert" style="text-align:center; display: none;" ref="noticeAlert"></div>
-					<form>
-						<div class="form-group">
-							<label for="noticeTextarea">Notiz</label>
-							<textarea id="noticeTextarea" v-model="editMealData.notice" rows="2" cols="60" class="form-control"></textarea>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">
-						Abbrechen
-					</button>
-					<button type="button" class="btn btn-primary" v-on:click="saveNotice">
-						Notiz speichern
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="panel-meal-heading" style="position: relative; padding: 5px 10px 5px;">
 		<span v-if="meal.type == 'BREAKFAST'" class="label label-default">F</span>
 		<span v-else class="label label-default">M</span>
@@ -115,32 +86,11 @@ module.exports = {
 				}
 			},
 			openModalNoticeDialog: function(meal) {
-				var vm = this;
 				$("#noticeModalDialog").modal();
-				vm.editMealData.id = meal.id;
-				if(meal.notice == null) {
-					vm.editMealData.notice = '';
-				} else {
-					vm.editMealData.notice = meal.notice;
-				}
-			},
-			saveNotice: function() {
-				var vm = this;
-				$.get("/mealcheck/save/notice", {
-					mealId: vm.editMealData.id,
-					notice: vm.editMealData.notice
-				}).done(function(controllerResponse) {
-					if(controllerResponse.success) {
-						$(vm.$refs.noticeAlert).hide();
-						$("#noticeModalDialog").modal('hide');
-					} else {
-						console.log(controllerResponse.message);
-						$(vm.$refs.noticeAlert).show();
-						$("#noticeDialogError").html(controllerResponse.message);
-					}
-				}).fail(function(controllerResponse) {
-					$(vm.$refs.noticeAlert).show();
-					$("#noticeDialogError").html("Fehler beim Speichern der Notiz: " + controllerResponse.message);
+				$("#mealId").val(meal.id);
+				$("#noticeTextarea").val(meal.notice);
+				$('#noticeModalDialog').on('hidden.bs.modal', function () {
+				    $('#noticeModalDialog form')[0].reset();
 				});
 			}
 		}

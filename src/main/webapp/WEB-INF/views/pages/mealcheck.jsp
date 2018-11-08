@@ -3,6 +3,37 @@
 	mealTypes = ${mealTypes};
 </script>
 
+<div id="noticeModalDialog" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">Notiz erfassen</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="noticeDialogError" class="alert alert-danger" role="alert" style="text-align:center; display: none;"></div>
+				<form id="saveNoticeForm">
+					<div class="form-group">
+						<label for="noticeTextarea">Notiz</label>
+						<textarea id="noticeTextarea" rows="2" cols="60" class="form-control"></textarea>
+						<input type="hidden" id="mealId"></input>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">
+					Abbrechen
+				</button>
+				<button id="saveNotice" type="button" class="btn btn-primary">
+					Notiz speichern
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="panel panel-default">
 	<div class="panel-body">
 		<form class="fancy-form" id="searchForm" novalidate="novalidate">
