@@ -71,11 +71,7 @@
 						<div class="row">
 							<div class="col-xs-5">
 								<label for="allAttributesList">Alle Besonderheiten</label>
-								<select id="allAttributesList" class="form-control" multiple="multiple" size="8">
-									<option v-for="attribute in attributesPickList" v-bind:value="attribute.id">
-										{{ attribute.name }}
-									</option>
-								</select>
+								<select id="allAttributesList" class="form-control" multiple="multiple" size="8"></select>
 							</div>
 							<div class="col-xs-2">
 								<button type="button" class="btn btn-block" v-on:click="moveAllOptionsToSelectedList" style="margin-top: 30px;">
@@ -93,11 +89,7 @@
 							</div>
 							<div class="col-xs-5">
 								<label for="selectedAttributesList">Gewählte Besonderheiten</label>
-								<select id="selectedAttributesList" class="form-control" multiple="multiple" size="8">
-									<option v-for="attribute in editChildData.attributes" v-bind:value="attribute.id">
-										{{ attribute.name }}
-									</option>
-								</select>
+								<select id="selectedAttributesList" class="form-control" multiple="multiple" size="8"></select>
 							</div>
 						</div>
 					</form>
@@ -256,6 +248,9 @@ export default {
 			vm.attributesPickList = vm.allAttributes.slice();
 			vm.moveAllOptionsToPickList();
 			vm.updateMode = false;
+			$("#createEditChildDialog").on('hidden.bs.modal', function () {
+				$('#createEditChildDialog form')[0].reset();
+			});
 		},
 		saveChild: function(updateMode) {
 			var vm = this;
@@ -300,6 +295,9 @@ export default {
 			vm.editChildData.attributes = child.attributes.slice();
 			vm.calculateAttributesPickList(vm.editChildData.attributes);
 			vm.updateMode = true;
+			$("#createEditChildDialog").on('hidden.bs.modal', function () {
+				$('#createEditChildDialog form')[0].reset();
+			});
 		},
 		openConfirmDeleteChild: function(child) {
 			var vm = this;
@@ -352,6 +350,13 @@ export default {
 			$("#selectedAttributesList > option").each(function() {
 				$(this).remove().appendTo("#allAttributesList");
 			});
+			if($("#allAttributesList > option").length == 0) {
+				this.allAttributes.forEach(function(attribute) {
+					var o = new Option(attribute.name, attribute.id);
+					$(o).html(attribute.name);
+					$('#allAttributesList').append(o);;
+				});
+			}
 		},
 		calculateAttributesPickList: function(attributes) {
 			var vm = this;
