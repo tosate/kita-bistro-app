@@ -19,7 +19,12 @@
 				<li ttId="menu.mealcheck" style="text-align: center;"><a
 					href="mealcheck"> <span class="glyphicon glyphicon-cutlery"
 						style="display: block; font-size: 200%; margin-bottom: 5px;"></span>
-						Meal check
+						Essenliste
+				</a></li>
+				<li ttId="menu.analysis" style="text-align: center;"><a
+					href="analysis"> <span class="glyphicon glyphicon-blackboard"
+					style="display: block; font-size: 200%; margin-bottom: 5px;"></span>
+					Auswerten
 				</a></li>
 				<sec:authorize access="isAuthenticated()">
 					<li ttId="menu.admin" style="text-align: center;"><a

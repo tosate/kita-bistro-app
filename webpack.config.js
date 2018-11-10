@@ -15,6 +15,7 @@ module.exports = {
 		entry : {
 			login : './src/main/javascript/login.js',
 			mealcheck : './src/main/javascript/mealcheck.js',
+			analysis : './src/main/javascript/analysis.js',
 			admin : './src/main/javascript/admin.js',
 			vendor : Object.keys(package.dependencies)
 		},

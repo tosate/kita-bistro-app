@@ -56,6 +56,20 @@
 	</div>
 </div>
 
+<div id="searchingSpinner" style="display: none; margin: 200px auto; text-align: center;">
+	<span class="glyphicon glyphicon-search"
+		style="display: block; font-size: 200%; margin-bottom: 5px;"></span>
+	<div>Searching</div>
+	<div>
+		<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+	</div>
+</div>
+
+<div id="searchWarning" class="alert alert-warning"
+	style="width: 90%; text-align: center; margin: 200px auto; font-weight: bold; display: none;">
+	Keine Ergebnisse gefunden!
+</div>
+
 <div>
 	<div id="searchResult" class="panel-body"></div>
 </div>

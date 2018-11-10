@@ -19,7 +19,7 @@ $(document).ready(function () {
 		minimumResultsForSearch: -1
 	});
 	
-	var MealsVueInstance = new MealsComponent({
+	var mealsVueInstance = new MealsComponent({
 		el: '#searchResult',
 		data: {
 			meals: [ ]
@@ -32,25 +32,25 @@ $(document).ready(function () {
 		e.preventDefault();
 		
 		$("#searchResult").empty();
-		
-//		$("#searchWarning").hide();
+		// Always hide warnings (if displayed) on submit, they will be shown again later if needed.
+		$("#searchWarning").hide();
 		
 		var mealType = $("#inputMealType").val();
 		var groupName = $("#inputGroupName").val();
 		
-		//$("#searchingSpinner").fadeIn();
-		MealsVueInstance.meals = [];
+		$("#searchingSpinner").fadeIn();
+		mealsVueInstance.meals = [];
 		
 		$("#searchBtn").prop("disabled", true);
 		$.get("mealcheck/search", {
 			groupName : groupName,
 			mealType : mealType
 		}).always( function () {
-//			$("searchingSpinner").hide();
+			$("#searchingSpinner").hide();
 			$("#searchBtn").prop("disabled", false);
 		}).done( function (data) {
 			if(data.length > 0) {
-				MealsVueInstance.meals = data;
+				mealsVueInstance.meals = data;
 			} else {
 				// Empty result
 				$("#searchWarning").html("Keine Ergebnisse gefunden!");

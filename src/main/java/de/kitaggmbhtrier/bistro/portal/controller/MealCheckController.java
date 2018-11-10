@@ -35,7 +35,7 @@ public class MealCheckController {
 	public static final String URL_MEAL_CHECK = "/mealcheck";
 	public static final String URL_SEARCH_JSON = URL_MEAL_CHECK + "/search";
 	public static final String URL_UPDATE_MEAL = URL_MEAL_CHECK + "/update/meal";
-	public static final String URL_SAVE_NOTICE = URL_MEAL_CHECK + "/save/notice";
+	public static final String URL_SAVE_NOTICE = URL_MEAL_CHECK + "/save/notice"; 
 
 	@Autowired
 	private KindergartenGroupRepository kindergartenGroupRepository;

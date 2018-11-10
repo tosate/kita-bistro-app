@@ -23,10 +23,18 @@
 	</definition>
 	
 	<definition name="mealcheck" extends="base.definition">
-		<put-attribute name="title" value="Gegessen" />
+		<put-attribute name="title" value="Essensliste" />
 		<put-attribute name="content" value="/WEB-INF/views/pages/mealcheck.jsp" />
 		<put-list-attribute name="additionalJsFilesList" cascade="true">
 			<add-attribute value="/webjars/BistroAppPortal/mealcheck.bundle.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="analysis" extends="base.definition">
+		<put-attribute name="title" value="Auswerten" />
+		<put-attribute name="content" value="/WEB-INF/views/pages/analysis.jsp" />
+		<put-list-attribute name="additionalJsFilesList" cascade="true">
+			<add-attribute value="/webjars/BistroAppPortal/analysis.bundle.js" />
 		</put-list-attribute>
 	</definition>
 	
