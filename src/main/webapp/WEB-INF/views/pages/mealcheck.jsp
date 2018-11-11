@@ -36,21 +36,24 @@
 
 <div class="panel panel-default">
 	<div class="panel-body">
-		<form class="fancy-form" id="searchForm" novalidate="novalidate">
-			<div class="row">
-				<div class="form-group" style="margin-right: 20px;">
-					<label for="inputGroupName">Bereich</label>
-					<select id="inputGroupName" name="inputGroupName" class="form-control m1-sm-2 mr-sm-4 my-2"></select>
-				</div>
-				<div class="form-group" style="margin-right: 20px;">
-					<label for="inputMealType">Mahlzeit</label>
-					<select id="inputMealType" name="inputMealType" class="form-control m1-sm-2 mr-sm-4 my-2"></select>
-				</div>
-				<div>
-					<button ttId="search.search" type="submit" class="btn btn-primary" id="searchBtn">
-						<span class="glyphicon glyphicon-search" style="display: block;"></span>Suchen
-					</button>
-				</div>
+		<form class="form-inline" id="searchForm" novalidate="novalidate">
+			<div class="form-group" style="margin-right: 20px;">
+				<label for="inputGroupName">Bereich</label>
+				<select id="inputGroupName" name="inputGroupName" class="form-control m1-sm-2 mr-sm-4 my-2"></select>
+			</div>
+			<div class="form-group" style="margin-right: 20px;">
+				<label for="inputMealType">Mahlzeit</label>
+				<select id="inputMealType" name="inputMealType" class="form-control m1-sm-2 mr-sm-4 my-2"></select>
+			</div>
+			<button ttId="search.search" type="submit" class="btn btn-primary" id="searchBtn" style="margin-right: 50px;">
+				<span class="glyphicon glyphicon-search" style="margin-right: 5px;"></span>Suchen
+			</button>
+			<div class="form-group">
+				<label for="hideEatenSwitch">Status 'gegessen' verstecken</label>
+				<label id="hideEatenSwitch" class="switch">
+					<input type="checkbox" id="hideEatenCheckbox">
+					<span class="slider round"></span>
+				</label>
 			</div>
 		</form>
 	</div>

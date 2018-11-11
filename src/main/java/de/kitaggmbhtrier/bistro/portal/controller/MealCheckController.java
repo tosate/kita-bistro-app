@@ -60,7 +60,7 @@ public class MealCheckController {
 	}
 
 	@RequestMapping(value = URL_SEARCH_JSON, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<Meal> listMeals(@RequestParam String groupName, @RequestParam String mealType) {
+	public @ResponseBody List<Meal> listMeals(@RequestParam String groupName, @RequestParam String mealType, @RequestParam(required = false) Boolean hideEaten) {
 		List<Meal> result = new ArrayList<>();
 
 		List<Meal> searchResult = this.mealRepository.findByMealDateAndType(PortalUtil.getToday(),
@@ -69,7 +69,13 @@ public class MealCheckController {
 		// filter by group name
 		for (Meal meal : searchResult) {
 			if (meal.getChild().getGroup().getName().equals(groupName)) {
-				result.add(meal);
+				if(hideEaten != null && hideEaten) {
+					if(!meal.isEaten()) {
+						result.add(meal);
+					}
+				} else {
+					result.add(meal);
+				}
 			}
 		}
 

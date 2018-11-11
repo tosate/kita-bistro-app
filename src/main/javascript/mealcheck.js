@@ -13,38 +13,40 @@ $(document).ready(function () {
 		data: groupNames,
 		minimumResultsForSearch: -1
 	});
-	
+
 	$("#inputMealType").select2({
 		data: mealTypes,
 		minimumResultsForSearch: -1
 	});
-	
+
 	var mealsVueInstance = new MealsComponent({
 		el: '#searchResult',
 		data: {
 			meals: [ ]
 		}
 	});
-	
+
 	$("#searchForm").submit(function (e) {
-		
+
 		// prevent usual submit of the form, handle with ajax instead
 		e.preventDefault();
-		
+
 		$("#searchResult").empty();
 		// Always hide warnings (if displayed) on submit, they will be shown again later if needed.
 		$("#searchWarning").hide();
-		
+
 		var mealType = $("#inputMealType").val();
 		var groupName = $("#inputGroupName").val();
-		
+		var hideEaten = $('#hideEatenCheckbox').prop("checked");
+
 		$("#searchingSpinner").fadeIn();
 		mealsVueInstance.meals = [];
-		
+
 		$("#searchBtn").prop("disabled", true);
 		$.get("mealcheck/search", {
 			groupName : groupName,
-			mealType : mealType
+			mealType : mealType,
+			hideEaten : hideEaten
 		}).always( function () {
 			$("#searchingSpinner").hide();
 			$("#searchBtn").prop("disabled", false);
@@ -60,11 +62,11 @@ $(document).ready(function () {
 			$("#searchWarning").html(data.responseText);
 			$("#searchWarning").show();
 		});
-		
+
 		// Stop propagation to avoid bubbling up parsley event
 //		e.stopImmediatePropagation()
 	});
-	
+
 	$('#saveNotice').click(function() {
 		var vm = this;
 		$.get("/mealcheck/save/notice", {
