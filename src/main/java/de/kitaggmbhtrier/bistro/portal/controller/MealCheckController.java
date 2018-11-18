@@ -55,7 +55,8 @@ public class MealCheckController {
 
 		mav.addObject("groupNames", (new ObjectMapper()).writer().writeValueAsString(this.getGroups()));
 		mav.addObject("mealTypes", (new ObjectMapper()).writer().writeValueAsString(mealTypes));
-		mav.addObject("meals", (new ObjectMapper()).writer().writeValueAsString(this.getTodaysMeals()));
+		// create meals for today if not done yet
+		this.getTodaysMeals();
 		return mav;
 	}
 

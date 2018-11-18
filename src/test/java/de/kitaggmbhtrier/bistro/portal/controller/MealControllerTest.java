@@ -56,6 +56,7 @@ public class MealControllerTest {
 	private KindergartenChildRepository kindergartenChildRepository;
 	private List<Meal> listBreakfastResult = new ArrayList<>();
 	private List<Meal> listLunchResult = new ArrayList<>();
+	private List<KindergartenGroup> groups = new ArrayList<>();
 
 	@Before
 	public void init() {
@@ -83,6 +84,7 @@ public class MealControllerTest {
 		this.listBreakfastResult.add(meal3);
 		this.listLunchResult.add(meal2);
 		this.listLunchResult.add(meal4);
+		this.groups.add(group);
 	}
 
 	@Test
