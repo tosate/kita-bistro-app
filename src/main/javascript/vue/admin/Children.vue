@@ -354,7 +354,18 @@ export default {
 				this.allAttributes.forEach(function(attribute) {
 					var o = new Option(attribute.name, attribute.id);
 					$(o).html(attribute.name);
-					$('#allAttributesList').append(o);;
+					$('#allAttributesList').append(o);
+				});
+			}
+			/*
+			 * add new attributes to picklist
+			 */
+			if($("#allAttributesList > option").length < this.allAttributes.length) {
+				$('#allAttributesList').empty();
+				this.allAttributes.forEach(function(attribute) {
+					var o = new Option(attribute.name, attribute.id);
+					$(o).html(attribute.name);
+					$('#allAttributesList').append(o);
 				});
 			}
 		},
