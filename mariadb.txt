@@ -1,0 +1,5 @@
+sudo mysql -u root -p < git/bistro-app/src/main/resources/schema-mysql.sql > output.tab
+
+GRANT ALL PRIVILEGES ON bistro.* to bistroapp@'localhost' identified BY 'secret';
+
+SELECT * FROM KINDERGARTEN_CHILD_ATTRIBUTES  A JOIN KINDERGARTEN_CHILD C ON A.KINDERGARTEN_CHILD_ID=C.ID
